@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Barometric Pressure &amp; Chronic Pain | MPC4</title>
+<style>
+  :root {
+    --primary: #1a4f7a; --accent: #e8670a; --bg: #f5f8fc; --card: #ffffff;
+    --text: #222831; --muted: #5a6473; --border: #d0dae6;
+    --code-bg: #1e2533; --code-fg: #a8d8a8; --warn: #fff4e0; --warn-b: #e8670a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  header { background: linear-gradient(135deg, var(--primary) 0%, #0d2f4d 100%); color: #fff; padding: 60px 24px 48px; text-align: center; }
+  header .badge { display: inline-block; background: var(--accent); color: #fff; font-size: 0.72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; margin-bottom: 16px; }
+  header h1 { font-size: clamp(1.7rem,4vw,2.8rem); font-weight: 800; margin-bottom: 12px; }
+  header p { font-size: 1.05rem; opacity: .85; max-width: 640px; margin: 0 auto; }
+  .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+  section { padding: 52px 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: none; }
+  h2 { font-size: 1.45rem; font-weight: 700; color: var(--primary); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 3px solid var(--accent); display: inline-block; }
+  h3 { font-size: 1.1rem; font-weight: 700; color: var(--primary); margin: 28px 0 8px; }
+  p { margin-bottom: 14px; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .callout { background: var(--warn); border-left: 4px solid var(--warn-b); padding: 16px 20px; border-radius: 6px; margin: 24px 0; font-size: .95rem; }
+  .callout strong { color: var(--warn-b); }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap: 18px; margin-top: 24px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 22px; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+  .card .icon { font-size: 1.8rem; margin-bottom: 10px; }
+  .card h4 { font-size: .95rem; font-weight: 700; color: var(--primary); margin-bottom: 6px; }
+  .card p { font-size: .88rem; color: var(--muted); margin: 0; }
+  table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: .92rem; }
+  th { background: var(--primary); color: #fff; padding: 10px 14px; text-align: left; }
+  td { padding: 9px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:nth-child(even) td { background: #f0f4f9; }
+  .pill { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: .78rem; font-weight: 700; }
+  .pill-green { background: #d4edda; color: #155724; }
+  .pill-yellow { background: #fff3cd; color: #856404; }
+  .pill-orange { background: #fde8c8; color: #8a4500; }
+  .pill-red { background: #f8d7da; color: #721c24; }
+  .timeline { position: relative; padding-left: 28px; margin-top: 20px; }
+  .timeline::before { content:''; position:absolute; left:8px; top:4px; bottom:4px; width:2px; background: var(--border); }
+  .tl-item { position: relative; margin-bottom: 22px; }
+  .tl-item::before { content:''; position:absolute; left:-24px; top:5px; width:12px; height:12px; border-radius:50%; background: var(--accent); border: 2px solid #fff; box-shadow: 0 0 0 2px var(--accent); }
+  .tl-item strong { color: var(--primary); }
+  .ref-list { list-style: none; margin-top: 16px; }
+  .ref-list li { font-size: .86rem; color: var(--muted); padding: 10px 0; border-bottom: 1px solid var(--border); line-height: 1.5; }
+  .ref-list li:last-child { border-bottom: none; }
+  .ref-num { color: var(--accent); font-weight: 700; margin-right: 8px; }
+  code { background: #e8edf4; padding: 1px 6px; border-radius: 4px; font-size: .83rem; font-family: monospace; }
+  footer { background: #0d2f4d; color: #8ca0b8; text-align: center; padding: 30px 20px; font-size: .82rem; }
+  footer strong { color: #fff; }
+  footer a { color: #8ca0b8; }
+
+  /* ── SITE NAV ── */
+  .site-nav{background:#0a1f33;padding:0 24px;position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(255,255,255,.08);}
+  .site-nav-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:16px;height:50px;flex-wrap:wrap;}
+  .site-nav-brand{color:#fff;font-weight:800;font-size:.95rem;text-decoration:none;white-space:nowrap;letter-spacing:-.2px;}
+  .site-nav-brand span{color:#e8670a;}
+  .site-nav-sep{color:rgba(255,255,255,.2);font-size:.8rem;}
+  .site-nav-links{display:flex;gap:2px;flex-wrap:wrap;}
+  .site-nav-links a{color:rgba(255,255,255,.6);font-size:.78rem;font-weight:500;text-decoration:none;padding:5px 10px;border-radius:4px;white-space:nowrap;transition:all .15s;}
+  .site-nav-links a:hover{color:#fff;background:rgba(255,255,255,.1);}
+  .site-nav-links a.current{color:#e8670a;background:rgba(232,103,10,.12);}
+
+</style>
+</head>
+<body>
+<div class="site-nav">
+  <div class="site-nav-inner">
+    <a href="index.html" class="site-nav-brand">Manage<span>Pain</span>Care</a>
+    <span class="site-nav-sep">|</span>
+    <nav class="site-nav-links">
+      <a href="science-centre.html">Science Centre</a>
+      <a href="mpc4-space-weather-chronic-pain.html">Space Weather</a>
+      <a href="mpc4-barometric-pressure-chronic-pain.html" class="current">Barometric Pressure</a>
+      <a href="mpc4-temperature-humidity-chronic-pain.html">Temp &amp; Humidity</a>
+      <a href="mpc4-condition-specific-weather-sensitivity.html">Conditions</a>
+      <a href="mpc4-glossary.html">Glossary</a>
+    </nav>
+  </div>
+</div>
+<header>
+  <div class="badge">MPC4 Science Centre</div>
+  <h1>Barometric Pressure &amp; Chronic Pain</h1>
+  <p>How changes in atmospheric pressure affect your joints, muscles, and nervous system — and what the research says.</p>
+</header>
+<div class="container">
+
+<section>
+  <h2>What Is Barometric Pressure?</h2>
+  <p>Barometric pressure (also called atmospheric pressure) is the weight of the air column above a given point on Earth's surface. It is measured in hectopascals (hPa) or millibars (mb), with sea-level average around 1013 hPa. Pressure changes continuously with altitude, temperature, and weather systems — rising ahead of clear weather and falling before storms, rain, or cold fronts.</p>
+  <p>For people living with chronic pain, pressure changes are among the most consistently reported environmental triggers of symptom flares. Surveys show that between 62% and 83% of chronic pain patients believe weather affects their pain, and barometric pressure is the single most cited factor [1, 5, 7].</p>
+
+  <h3>How Pressure Changes Are Measured in MPC4</h3>
+  <p>MPC4 tracks both the absolute barometric pressure reading from your local weather station and the rate of pressure change (delta hPa per 3 hours). Research shows that it is often the <em>rate and direction</em> of pressure change — not the absolute value — that correlates most strongly with pain events [3, 6].</p>
+  <div class="cards">
+    <div class="card"><div class="icon">📉</div><h4>Falling Pressure</h4><p>Associated with incoming storms and low-pressure systems. Most frequently linked to joint and musculoskeletal pain flares. A drop of 5–10 hPa over 3–6 hours is considered clinically significant.</p></div>
+    <div class="card"><div class="icon">📈</div><h4>Rising Pressure</h4><p>Generally associated with clearing weather. Some patients report pain improvement. Rapid rises can occasionally trigger headaches or sinus-related pain.</p></div>
+    <div class="card"><div class="icon">⚖️</div><h4>Low Absolute Pressure</h4><p>Sustained low pressure (below ~1000 hPa) has been associated with increased arthritis symptoms, even without rapid change. Found in winter storms and coastal weather systems.</p></div>
+    <div class="card"><div class="icon">🔄</div><h4>Pressure Variability</h4><p>High day-to-day variability in pressure — common in transitional seasons — correlates with greater symptom burden in fibromyalgia and chronic musculoskeletal pain patients [8].</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>Biological Mechanisms</h2>
+  <h3>1. Joint Cavity Pressure and Tissue Expansion</h3>
+  <p>The most widely cited mechanism involves the behaviour of synovial fluid and gas within joint capsules. When external barometric pressure falls, the relative internal pressure in joint spaces increases, causing slight expansion of fluid and soft tissues against already sensitised nerve endings. In healthy joints this is imperceptible; in joints with inflammation, prior injury, or arthritis, the nerve endings (nociceptors) are already upregulated and respond to even minor mechanical changes [3, 6].</p>
+  <p>A landmark study by Wilder, Hall and Barrett (2003) in <em>Rheumatology</em> documented a statistically significant relationship between pain and a recent fall in barometric pressure direction in osteoarthritis patients, supporting this tissue-expansion model [3].</p>
+
+  <h3>2. Nociceptor Sensitisation and Central Sensitisation</h3>
+  <p>In conditions involving central sensitisation — including fibromyalgia, complex regional pain syndrome (CRPS), and neuropathic pain — the pain amplification system is already dysregulated. Barometric pressure changes act as a peripheral stimulus that, under normal circumstances, would be subthreshold. In a centrally sensitised nervous system, the same stimulus crosses the threshold for conscious pain perception. This explains why weather-sensitive responses are more pronounced in fibromyalgia than in osteoarthritis alone [1, 8].</p>
+
+  <h3>3. Vascular and Inflammatory Responses</h3>
+  <p>Falling barometric pressure is associated with mild vasodilation and changes in blood viscosity. In inflammatory conditions such as rheumatoid arthritis, this may transiently increase inflammatory mediator delivery to affected joints. A 2020 systematic review by Beukenhorst et al. in <em>Pain</em> found associations between low atmospheric pressure and increased musculoskeletal pain, particularly in osteoarthritis, and noted that the mechanisms likely involve both mechanical and vascular pathways [8].</p>
+
+  <h3>4. Sinus and Intracranial Pressure</h3>
+  <p>For migraine and tension-type headache sufferers, barometric pressure changes directly affect the pressure gradient across sinus walls and the cranial vault. A 2011 study by Kimoto et al. found that a decrease in barometric pressure was significantly associated with migraine onset, with maximal risk when pressure dropped more than 5 hPa in 24 hours [9]. The trigeminal nerve, which governs head and facial pain, is acutely sensitive to these pressure shifts.</p>
+
+  <div class="callout">
+    <strong>Key finding for MPC4 users:</strong> The relationship between barometric pressure and pain is real but highly individual. Not all pressure drops trigger symptoms in every person. MPC4's personal correlation tracker helps you identify your specific pressure threshold — the point at which your pain reliably responds.
+  </div>
+</section>
+
+<section>
+  <h2>What the Research Shows by Condition</h2>
+  <table>
+    <thead><tr><th>Condition</th><th>Pressure Sensitivity Finding</th><th>Evidence Level</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Fibromyalgia</strong></td><td>Significant inverse relationship between pain and barometric pressure confirmed in multiple studies. Pressure drops most predictive of flares [1, 2].</td><td><span class="pill pill-green">Strong</span></td></tr>
+      <tr><td><strong>Osteoarthritis</strong></td><td>83% of patients weather-sensitive in European cohort; pressure direction change more predictive than absolute value [3, 5].</td><td><span class="pill pill-green">Strong</span></td></tr>
+      <tr><td><strong>Rheumatoid Arthritis</strong></td><td>Mixed findings overall; consistent subset (~25%) shows pressure-pain relationship. Humidity often acts in combination [6, 8].</td><td><span class="pill pill-yellow">Moderate</span></td></tr>
+      <tr><td><strong>Migraine</strong></td><td>Falling pressure a confirmed trigger. 5 hPa drop in 24 hours associated with significantly elevated migraine risk [9, 10].</td><td><span class="pill pill-green">Strong</span></td></tr>
+      <tr><td><strong>Chronic Back Pain</strong></td><td>Case-crossover studies show modest but significant associations with pressure and humidity combined [7].</td><td><span class="pill pill-yellow">Moderate</span></td></tr>
+      <tr><td><strong>Neuropathic Pain</strong></td><td>Animal models confirm temperature and pressure changes aggravate neuropathic pain behaviours. Human studies emerging [4].</td><td><span class="pill pill-orange">Early</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>MPC4 Barometric Pressure Alerts</h2>
+  <p>MPC4 sources barometric pressure data from the Open-Meteo API and your device's GPS location, updated hourly. The following thresholds trigger in-app notifications:</p>
+  <table>
+    <thead><tr><th>Event</th><th>Threshold</th><th>Alert Level</th></tr></thead>
+    <tbody>
+      <tr><td>Slow pressure fall</td><td>−3 to −5 hPa / 3 hr</td><td><span class="pill pill-yellow">Yellow Advisory</span></td></tr>
+      <tr><td>Moderate pressure fall</td><td>−5 to −8 hPa / 3 hr</td><td><span class="pill pill-orange">Orange Alert</span></td></tr>
+      <tr><td>Rapid pressure fall</td><td>&gt; −8 hPa / 3 hr</td><td><span class="pill pill-red">Red Alert</span></td></tr>
+      <tr><td>Sustained low pressure</td><td>&lt; 1000 hPa for &gt;12 hr</td><td><span class="pill pill-yellow">Yellow Advisory</span></td></tr>
+      <tr><td>High variability forecast</td><td>±10 hPa in 24-hr window</td><td><span class="pill pill-yellow">Yellow Advisory</span></td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <strong>Tip:</strong> Barometric pressure alerts work best when combined with your personal sensitivity profile in MPC4. After 4 weeks of pain journalling, MPC4 will automatically calibrate alert thresholds to your individual response pattern.
+  </div>
+</section>
+
+<section>
+  <h2>Managing Pain During Pressure Changes</h2>
+  <div class="timeline">
+    <div class="tl-item"><strong>Pre-empt with movement.</strong> Gentle, low-impact movement before a forecast pressure drop helps maintain synovial fluid circulation and reduces stiffness onset. Avoid high-impact exercise during a drop — save that for rising or stable pressure days.</div>
+    <div class="tl-item"><strong>Apply heat proactively.</strong> Heat therapy applied to affected joints before a pressure drop can dilate local blood vessels and relax periarticular muscles before inflammation has a chance to amplify.</div>
+    <div class="tl-item"><strong>Manage hydration.</strong> Dehydration reduces intervertebral disc and cartilage resilience. Maintaining hydration on high-variability days reduces mechanical sensitivity.</div>
+    <div class="tl-item"><strong>Review medication timing with your clinician.</strong> Some patients benefit from adjusting anti-inflammatory or analgesic dosing schedules on forecast high-pressure-change days. This should always be discussed with your prescriber.</div>
+    <div class="tl-item"><strong>Track and learn your pattern.</strong> Most weather-sensitive individuals have a personal lag time — pain peaks not during the pressure drop but 6–24 hours after. MPC4 helps you identify your specific lag window.</div>
+  </div>
+  <div class="callout">
+    <strong>Disclaimer:</strong> This information is educational. Always consult your healthcare provider before making changes to your pain management plan.
+  </div>
+</section>
+
+<section id="references">
+  <h2>References</h2>
+  <ol class="ref-list">
+    <li><span class="ref-num">[1]</span> Fagerlund, A. J., Iversen, M., Ekeland, A., &amp; Moen, C. M. (2019). Blame it on the weather? The association between pain in fibromyalgia, relative humidity, temperature and barometric pressure. <em>PLOS ONE, 14</em>(5), e0216902. <a href="https://doi.org/10.1371/journal.pone.0216902" target="_blank">https://doi.org/10.1371/journal.pone.0216902</a></li>
+    <li><span class="ref-num">[2]</span> Smedslund, G., Eide, H., &amp; Kristjansdottir, Ó. B. (2014). Do weather changes influence pain levels in women with fibromyalgia, and can psychosocial variables moderate these influences? <em>International Journal of Rheumatic Diseases, 17</em>(4), 380–386. <a href="https://doi.org/10.1111/1756-185X.12248" target="_blank">https://doi.org/10.1111/1756-185X.12248</a></li>
+    <li><span class="ref-num">[3]</span> Wilder, F. V., Hall, B. J., &amp; Barrett, J. P. (2003). Osteoarthritis pain and weather. <em>Rheumatology, 42</em>(8), 955–958. <a href="https://doi.org/10.1093/rheumatology/keg264" target="_blank">https://doi.org/10.1093/rheumatology/keg264</a></li>
+    <li><span class="ref-num">[4]</span> Sato, J. (2003). Weather change and pain: a behavioral animal study of the influences of simulated meteorological changes on chronic pain. <em>International Journal of Biometeorology, 47</em>(2), 55–61. <a href="https://doi.org/10.1007/s00484-002-0157-3" target="_blank">https://doi.org/10.1007/s00484-002-0157-3</a></li>
+    <li><span class="ref-num">[5]</span> Timmermans, E. J., Van Der Pas, S., Schaap, L. A., et al. (2014). Self-perceived weather sensitivity and joint pain in older people with osteoarthritis in six European countries: results from the European Project on OSteoArthritis (EPOSA). <em>BMC Musculoskeletal Disorders, 15</em>, 66. <a href="https://doi.org/10.1186/1471-2474-15-66" target="_blank">https://doi.org/10.1186/1471-2474-15-66</a></li>
+    <li><span class="ref-num">[6]</span> Patberg, W. R., &amp; Rasker, J. J. (2004). Weather effects in rheumatoid arthritis: from controversy to consensus. A review. <em>Journal of Rheumatology, 31</em>(7), 1327–1334.</li>
+    <li><span class="ref-num">[7]</span> Steffens, D., Maher, C. G., Li, Q., &amp; Ferreira, M. L. (2014). Effect of weather on back pain: results from a case-crossover study. <em>Arthritis Care &amp; Research, 66</em>(12), 1867–1872. <a href="https://doi.org/10.1002/acr.22378" target="_blank">https://doi.org/10.1002/acr.22378</a></li>
+    <li><span class="ref-num">[8]</span> Beukenhorst, A. L., Schultz, D. M., McBeth, J., Sergeant, J. C., et al. (2020). Are weather conditions associated with chronic musculoskeletal pain? Review of results and methodologies. <em>Pain, 161</em>(4), 668–683. <a href="https://doi.org/10.1097/j.pain.0000000000001776" target="_blank">https://doi.org/10.1097/j.pain.0000000000001776</a></li>
+    <li><span class="ref-num">[9]</span> Kimoto, K., Aiba, S., Takashima, R., &amp; Suzuki, K. (2011). Influence of barometric pressure in patients with migraine headache. <em>Internal Medicine, 50</em>(18), 1923–1928. <a href="https://doi.org/10.2169/internalmedicine.50.5640" target="_blank">https://doi.org/10.2169/internalmedicine.50.5640</a></li>
+    <li><span class="ref-num">[10]</span> Mukamal, K. J., Wellenius, G. A., Suh, H. H., &amp; Mittleman, M. A. (2009). Weather and air pollution as triggers of severe headaches. <em>Neurology, 72</em>(10), 922–927. <a href="https://doi.org/10.1212/01.wnl.0000344152.56020.94" target="_blank">https://doi.org/10.1212/01.wnl.0000344152.56020.94</a></li>
+    <li><span class="ref-num">[11]</span> Shutty, M. S. Jr., Cundiff, G., &amp; DeGood, D. E. (1992). Pain complaint and the weather: weather sensitivity and symptom complaints in chronic pain patients. <em>Pain, 49</em>(2), 199–204. <a href="https://doi.org/10.1016/0304-3959(92)90142-3" target="_blank">https://doi.org/10.1016/0304-3959(92)90142-3</a></li>
+    <li><span class="ref-num">[12]</span> Wang, L., Xu, Q., Chen, Y., Zhu, Z., &amp; Cao, Y. (2023). Associations between weather conditions and osteoarthritis pain: a systematic review and meta-analysis. <em>Annals of Medicine, 55</em>(1), 1–14. <a href="https://doi.org/10.1080/07853890.2022.2163736" target="_blank">https://doi.org/10.1080/07853890.2022.2163736</a></li>
+  </ol>
+</section>
+</div>
+<footer><strong>MPC4 — Manage Pain &amp; Chronic Conditions</strong><br/>Weather data sourced from Open-Meteo (open-source, CC BY 4.0). This page is for informational purposes only. Not a substitute for medical advice.<br/>Last updated: May 2026</footer>
+</body></html>

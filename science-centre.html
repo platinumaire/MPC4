@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Science Centre | ManagePainCare — MPC4</title>
+<style>
+  :root{
+    --primary:#1a4f7a;--primary-dark:#0d2f4d;--accent:#e8670a;
+    --bg:#f5f8fc;--card:#ffffff;--text:#222831;--muted:#5a6473;
+    --border:#d0dae6;--warn:#fff4e0;--warn-b:#e8670a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;}
+
+  /* ── SITE NAV ── */
+  .site-nav{background:#0a1f33;padding:0 24px;position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(255,255,255,.08);}
+  .site-nav-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:16px;height:50px;}
+  .site-nav-brand{color:#fff;font-weight:800;font-size:.95rem;text-decoration:none;white-space:nowrap;letter-spacing:-.2px;}
+  .site-nav-brand span{color:#e8670a;}
+  .site-nav-sep{color:rgba(255,255,255,.2);font-size:.8rem;}
+  .site-nav-links{display:flex;gap:2px;flex-wrap:wrap;}
+  .site-nav-links a{color:rgba(255,255,255,.6);font-size:.78rem;font-weight:500;text-decoration:none;padding:5px 10px;border-radius:4px;white-space:nowrap;transition:all .15s;}
+  .site-nav-links a:hover{color:#fff;background:rgba(255,255,255,.1);}
+  .site-nav-links a.current{color:#e8670a;background:rgba(232,103,10,.12);}
+
+  /* ── HERO ── */
+  header{
+    background:linear-gradient(135deg,var(--primary-dark) 0%,var(--primary) 60%,#1a6fa8 100%);
+    color:#fff;padding:72px 24px 60px;text-align:center;position:relative;overflow:hidden;
+  }
+  header::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse at 70% 40%,rgba(232,103,10,.12) 0%,transparent 65%);
+  }
+  header .badge{
+    display:inline-block;background:var(--accent);color:#fff;
+    font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+    padding:4px 14px;border-radius:20px;margin-bottom:18px;position:relative;
+  }
+  header h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;margin-bottom:14px;position:relative;line-height:1.1;}
+  header p{font-size:1.05rem;opacity:.85;max-width:600px;margin:0 auto;position:relative;}
+
+  /* ── INTRO STRIP ── */
+  .intro-strip{
+    background:#fff;border-bottom:1px solid var(--border);
+    padding:32px 24px;text-align:center;
+  }
+  .intro-strip p{max-width:720px;margin:0 auto;font-size:1rem;color:var(--muted);line-height:1.75;}
+  .intro-strip strong{color:var(--text);}
+
+  /* ── TOPIC GRID ── */
+  .container{max-width:1000px;margin:0 auto;padding:0 24px;}
+  .section-label{
+    font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:10px;padding-top:56px;
+  }
+  .section-title{font-size:1.7rem;font-weight:800;color:var(--primary);margin-bottom:8px;}
+  .section-sub{font-size:.95rem;color:var(--muted);margin-bottom:36px;max-width:640px;}
+
+  .topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:24px;padding-bottom:64px;}
+
+  .topic-card{
+    background:var(--card);border:1.5px solid var(--border);border-radius:14px;
+    overflow:hidden;box-shadow:0 2px 12px rgba(26,79,122,.07);
+    transition:transform .2s,box-shadow .2s,border-color .2s;
+    text-decoration:none;display:block;
+  }
+  .topic-card:hover{
+    transform:translateY(-3px);box-shadow:0 8px 28px rgba(26,79,122,.14);
+    border-color:var(--accent);
+  }
+  .topic-card-header{padding:24px 24px 16px;display:flex;align-items:flex-start;gap:14px;}
+  .topic-icon{
+    width:52px;height:52px;border-radius:12px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-size:1.6rem;
+  }
+  .icon-space{background:#e8f4fb;}
+  .icon-baro{background:#fef3e2;}
+  .icon-temp{background:#e8f8ef;}
+  .icon-cond{background:#f3e8fb;}
+  .icon-gloss{background:#e8edf4;}
+  .topic-card-header h3{font-size:1rem;font-weight:700;color:var(--primary);margin-bottom:4px;line-height:1.3;}
+  .topic-card-header .tag{font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);}
+  .topic-card-body{padding:0 24px 24px;}
+  .topic-card-body p{font-size:.88rem;color:var(--muted);line-height:1.6;margin-bottom:14px;}
+  .topic-tags{display:flex;flex-wrap:wrap;gap:6px;}
+  .t-tag{
+    display:inline-block;background:#e8edf4;color:var(--primary);
+    font-size:.72rem;font-weight:600;padding:3px 9px;border-radius:10px;
+  }
+  .topic-card-footer{
+    border-top:1px solid var(--border);padding:12px 24px;
+    display:flex;align-items:center;justify-content:space-between;
+    font-size:.8rem;font-weight:600;color:var(--accent);
+  }
+  .topic-card-footer svg{transition:transform .2s;}
+  .topic-card:hover .topic-card-footer svg{transform:translateX(4px);}
+
+  /* ── WHAT IS SCIENCE CENTRE ── */
+  .about-strip{
+    background:linear-gradient(135deg,#0d2f4d,#1a4f7a);
+    color:#fff;padding:56px 24px;margin:0;
+  }
+  .about-inner{max-width:860px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;}
+  @media(max-width:640px){.about-inner{grid-template-columns:1fr;}}
+  .about-inner h2{font-size:1.6rem;font-weight:800;margin-bottom:14px;}
+  .about-inner p{font-size:.95rem;opacity:.8;line-height:1.75;margin-bottom:12px;}
+  .about-cards{display:flex;flex-direction:column;gap:12px;}
+  .about-card{
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);
+    border-radius:10px;padding:16px 18px;display:flex;gap:12px;align-items:flex-start;
+  }
+  .about-card .icon{font-size:1.4rem;flex-shrink:0;}
+  .about-card h4{font-size:.88rem;font-weight:700;color:#fff;margin-bottom:3px;}
+  .about-card p{font-size:.8rem;opacity:.7;margin:0;line-height:1.5;}
+
+  /* ── PLATINUMAIRE FOOTER ── */
+  .plat-banner{
+    background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+    padding:40px 24px;text-align:center;
+  }
+  .plat-banner .plat-label{font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
+  .plat-banner h3{font-size:1.2rem;font-weight:800;color:var(--primary);margin-bottom:8px;}
+  .plat-banner p{font-size:.88rem;color:var(--muted);max-width:560px;margin:0 auto 18px;}
+  .plat-banner a{
+    display:inline-block;background:var(--primary);color:#fff;font-weight:700;font-size:.88rem;
+    padding:11px 24px;border-radius:24px;text-decoration:none;transition:background .2s;
+  }
+  .plat-banner a:hover{background:var(--primary-dark);}
+
+  footer{background:#0a1f33;color:#8ca0b8;text-align:center;padding:32px 20px;font-size:.82rem;}
+  footer strong{color:#fff;}
+  footer a{color:#8ca0b8;}
+</style>
+</head>
+<body>
+
+<!-- SITE NAV -->
+<div class="site-nav">
+  <div class="site-nav-inner">
+    <a href="index.html" class="site-nav-brand">Manage<span>Pain</span>Care</a>
+    <span class="site-nav-sep">|</span>
+    <nav class="site-nav-links">
+      <a href="science-centre.html" class="current">Science Centre</a>
+      <a href="mpc4-space-weather-chronic-pain.html">Space Weather</a>
+      <a href="mpc4-barometric-pressure-chronic-pain.html">Barometric Pressure</a>
+      <a href="mpc4-temperature-humidity-chronic-pain.html">Temp &amp; Humidity</a>
+      <a href="mpc4-condition-specific-weather-sensitivity.html">Conditions</a>
+      <a href="mpc4-glossary.html">Glossary</a>
+    </nav>
+  </div>
+</div>
+
+<!-- HERO -->
+<header>
+  <div class="badge">MPC4 Science Centre</div>
+  <h1>Why does weather affect your pain?</h1>
+  <p>The peer-reviewed research behind every alert, every correlation, and every pattern MPC4 helps you find — explained in plain language.</p>
+</header>
+
+<!-- INTRO -->
+<div class="intro-strip">
+  <p>You've always suspected it. <strong>Cold fronts. Pressure drops. Geomagnetic storms.</strong> Your body responds to things your doctor may never mention. This Science Centre explains the mechanisms — and how MPC4 uses real-time NASA and NOAA data to help you see the patterns before they become flares.</p>
+</div>
+
+<!-- TOPIC CARDS -->
+<div class="container">
+  <div class="section-label">Explore the Research</div>
+  <h2 class="section-title">Five topics. All the science.</h2>
+  <p class="section-sub">Each page covers the biology, the peer-reviewed evidence, and how MPC4 uses the data — with full academic references.</p>
+
+  <div class="topic-grid">
+
+    <!-- Space Weather -->
+    <a href="mpc4-space-weather-chronic-pain.html" class="topic-card">
+      <div class="topic-card-header">
+        <div class="topic-icon icon-space">🌌</div>
+        <div>
+          <div class="tag">Space Weather</div>
+          <h3>Space Weather &amp; Chronic Pain</h3>
+        </div>
+      </div>
+      <div class="topic-card-body">
+        <p>Solar flares. Coronal mass ejections. Geomagnetic storms. How activity on the Sun disrupts melatonin, the autonomic nervous system, and inflammatory pathways — with a 2–4 day lag you can plan around.</p>
+        <div class="topic-tags">
+          <span class="t-tag">Kp Index</span>
+          <span class="t-tag">NOAA API</span>
+          <span class="t-tag">Melatonin</span>
+          <span class="t-tag">15 references</span>
+        </div>
+      </div>
+      <div class="topic-card-footer">
+        Read the science
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+    <!-- Barometric Pressure -->
+    <a href="mpc4-barometric-pressure-chronic-pain.html" class="topic-card">
+      <div class="topic-card-header">
+        <div class="topic-icon icon-baro">📉</div>
+        <div>
+          <div class="tag">Atmospheric</div>
+          <h3>Barometric Pressure &amp; Chronic Pain</h3>
+        </div>
+      </div>
+      <div class="topic-card-body">
+        <p>The most commonly reported weather trigger across all chronic pain conditions. How falling pressure expands tissue against sensitised nerve endings — and why the <em>rate</em> of change matters more than the absolute value.</p>
+        <div class="topic-tags">
+          <span class="t-tag">Joint Cavity</span>
+          <span class="t-tag">Fibromyalgia</span>
+          <span class="t-tag">Migraine</span>
+          <span class="t-tag">12 references</span>
+        </div>
+      </div>
+      <div class="topic-card-footer">
+        Read the science
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+    <!-- Temperature & Humidity -->
+    <a href="mpc4-temperature-humidity-chronic-pain.html" class="topic-card">
+      <div class="topic-card-header">
+        <div class="topic-icon icon-temp">🌡️</div>
+        <div>
+          <div class="tag">Conventional Weather</div>
+          <h3>Temperature, Humidity &amp; Chronic Pain</h3>
+        </div>
+      </div>
+      <div class="topic-card-body">
+        <p>Cold and humidity are the most consistently reported weather triggers in research. The cold + wet combination is worse than either alone — and MPC4's Temperature-Humidity Pain Index (THPI) captures exactly that.</p>
+        <div class="topic-tags">
+          <span class="t-tag">THPI Score</span>
+          <span class="t-tag">RA &amp; OA</span>
+          <span class="t-tag">Neuropathy</span>
+          <span class="t-tag">10 references</span>
+        </div>
+      </div>
+      <div class="topic-card-footer">
+        Read the science
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+    <!-- Condition-Specific -->
+    <a href="mpc4-condition-specific-weather-sensitivity.html" class="topic-card">
+      <div class="topic-card-header">
+        <div class="topic-icon icon-cond">🧬</div>
+        <div>
+          <div class="tag">By Condition</div>
+          <h3>Condition-Specific Weather Sensitivity</h3>
+        </div>
+      </div>
+      <div class="topic-card-body">
+        <p>Not all chronic pain responds to weather the same way. Detailed trigger profiles for fibromyalgia, rheumatoid arthritis, osteoarthritis, migraine, chronic back pain, and neuropathic pain — with evidence ratings.</p>
+        <div class="topic-tags">
+          <span class="t-tag">6 Conditions</span>
+          <span class="t-tag">Trigger Profiles</span>
+          <span class="t-tag">Evidence Ratings</span>
+          <span class="t-tag">12 references</span>
+        </div>
+      </div>
+      <div class="topic-card-footer">
+        Read the science
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+    <!-- Glossary -->
+    <a href="mpc4-glossary.html" class="topic-card">
+      <div class="topic-card-header">
+        <div class="topic-icon icon-gloss">📖</div>
+        <div>
+          <div class="tag">Reference</div>
+          <h3>Glossary of Terms</h3>
+        </div>
+      </div>
+      <div class="topic-card-body">
+        <p>Plain-language definitions for every scientific and technical term used across the Science Centre — from Kp Index and TRPM8 to central sensitisation and the THPI. Searchable and filterable by category.</p>
+        <div class="topic-tags">
+          <span class="t-tag">Space Weather</span>
+          <span class="t-tag">Biology</span>
+          <span class="t-tag">MPC4 Terms</span>
+          <span class="t-tag">Searchable</span>
+        </div>
+      </div>
+      <div class="topic-card-footer">
+        Browse the glossary
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+  </div><!-- /topic-grid -->
+</div><!-- /container -->
+
+<!-- ABOUT SECTION -->
+<div class="about-strip">
+  <div class="about-inner">
+    <div>
+      <h2>Science you can actually use.</h2>
+      <p>Every alert in MPC4 is grounded in peer-reviewed research. We don't make up correlations — we pull real-time data from NOAA and NASA and match it against what the science says about your specific condition.</p>
+      <p>After 4–8 weeks of logging, MPC4 builds a personal sensitivity profile — so you stop guessing and start knowing which variables actually affect <em>your</em> pain, and by how much.</p>
+    </div>
+    <div class="about-cards">
+      <div class="about-card">
+        <div class="icon">🛰️</div>
+        <div>
+          <h4>Live NASA &amp; NOAA Data</h4>
+          <p>Real-time Kp index, solar wind, proton flux, 45-day forecasts — all public domain, updated by the minute.</p>
+        </div>
+      </div>
+      <div class="about-card">
+        <div class="icon">📊</div>
+        <div>
+          <h4>Personal Sensitivity Profile</h4>
+          <p>Your pain isn't average. After a few weeks your thresholds, lag times, and trigger rankings are yours — not the study cohort's.</p>
+        </div>
+      </div>
+      <div class="about-card">
+        <div class="icon">🔒</div>
+        <div>
+          <h4>100% Private</h4>
+          <p>All data stays on your device. Nothing shared without your explicit action.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PLATINUMAIRE BANNER -->
+<div class="plat-banner">
+  <div class="plat-label">A Platinumaire Product</div>
+  <h3>ManagePainCare is built by someone who needed it.</h3>
+  <p>Platinumaire — from the Irish <em>aire</em>, meaning "Watch Over, Care For" — exists because chronic pain patients deserve data about their own bodies. This is the platinum standard of watching over yourself.</p>
+  <a href="index.html">← Back to ManagePainCare</a>
+</div>
+
+<footer>
+  <strong>MPC4 — ManagePainCare</strong> &nbsp;|&nbsp; A <strong>Platinumaire LLC</strong> Product<br/>
+  Space weather data: <a href="https://www.swpc.noaa.gov/">NOAA Space Weather Prediction Center</a> (public domain) &nbsp;|&nbsp;
+  Weather data: <a href="https://open-meteo.com/">Open-Meteo</a> (CC BY 4.0)<br/>
+  Science Centre content is for informational and educational purposes. Not a substitute for medical advice.<br/>
+  &copy; 2026 Platinumaire LLC &nbsp;|&nbsp; All rights reserved
+</footer>
+
+</body>
+</html>

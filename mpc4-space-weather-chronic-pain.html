@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Space Weather &amp; Chronic Pain | MPC4</title>
+  <style>
+    :root {
+      --primary: #1a4f7a;
+      --accent:  #e8670a;
+      --bg:      #f5f8fc;
+      --card:    #ffffff;
+      --text:    #222831;
+      --muted:   #5a6473;
+      --border:  #d0dae6;
+      --code-bg: #1e2533;
+      --code-fg: #a8d8a8;
+      --warn:    #fff4e0;
+      --warn-b:  #e8670a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+    /* ── HEADER ── */
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, #0d2f4d 100%);
+      color: #fff;
+      padding: 60px 24px 48px;
+      text-align: center;
+    }
+    header .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+    header h1 { font-size: clamp(1.7rem, 4vw, 2.8rem); font-weight: 800; margin-bottom: 12px; }
+    header p  { font-size: 1.05rem; opacity: 0.85; max-width: 640px; margin: 0 auto; }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+    section    { padding: 52px 0; border-bottom: 1px solid var(--border); }
+    section:last-of-type { border-bottom: none; }
+    h2 {
+      font-size: 1.45rem; font-weight: 700; color: var(--primary);
+      margin-bottom: 14px; padding-bottom: 8px;
+      border-bottom: 3px solid var(--accent);
+      display: inline-block;
+    }
+    h3 { font-size: 1.1rem; font-weight: 700; color: var(--primary); margin: 28px 0 8px; }
+    p  { margin-bottom: 14px; }
+    a  { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── CALLOUT ── */
+    .callout {
+      background: var(--warn); border-left: 4px solid var(--warn-b);
+      padding: 16px 20px; border-radius: 6px; margin: 24px 0; font-size: 0.95rem;
+    }
+    .callout strong { color: var(--warn-b); }
+
+    /* ── MECHANISM CARDS ── */
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; margin-top: 24px; }
+    .card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+      padding: 22px; box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+    .card .icon { font-size: 1.8rem; margin-bottom: 10px; }
+    .card h4 { font-size: 0.95rem; font-weight: 700; color: var(--primary); margin-bottom: 6px; }
+    .card p  { font-size: 0.88rem; color: var(--muted); margin: 0; }
+
+    /* ── KP TABLE ── */
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.92rem; }
+    th { background: var(--primary); color: #fff; padding: 10px 14px; text-align: left; }
+    td { padding: 9px 14px; border-bottom: 1px solid var(--border); }
+    tr:nth-child(even) td { background: #f0f4f9; }
+    .pill {
+      display: inline-block; padding: 3px 10px; border-radius: 12px;
+      font-size: 0.78rem; font-weight: 700;
+    }
+    .pill-green  { background: #d4edda; color: #155724; }
+    .pill-yellow { background: #fff3cd; color: #856404; }
+    .pill-orange { background: #fde8c8; color: #8a4500; }
+    .pill-red    { background: #f8d7da; color: #721c24; }
+    .pill-dark   { background: #3d0000; color: #ffb3b3; }
+
+    /* ── CODE BLOCK ── */
+    .code-wrap { background: var(--code-bg); border-radius: 10px; overflow: hidden; margin: 20px 0; }
+    .code-label {
+      background: #2c3547; color: #8ca0b8; font-size: 0.75rem;
+      padding: 6px 16px; letter-spacing: 0.05em; text-transform: uppercase;
+    }
+    pre {
+      padding: 20px; overflow-x: auto; font-family: 'Cascadia Code', 'Fira Mono', monospace;
+      font-size: 0.84rem; line-height: 1.6; color: var(--code-fg);
+    }
+    .kw  { color: #79b8ff; }
+    .str { color: #f0c070; }
+    .cmt { color: #6a8a6a; font-style: italic; }
+    .fn  { color: #dfa0e0; }
+
+    /* ── ENDPOINT TABLE ── */
+    .endpoint-table th { font-size: 0.82rem; }
+    .endpoint-table td { font-size: 0.82rem; vertical-align: top; }
+    code { background: #e8edf4; padding: 1px 6px; border-radius: 4px; font-size: 0.83rem; font-family: monospace; }
+
+    /* ── TIMELINE ── */
+    .timeline { position: relative; padding-left: 28px; margin-top: 20px; }
+    .timeline::before { content:''; position:absolute; left:8px; top:4px; bottom:4px; width:2px; background: var(--border); }
+    .tl-item { position: relative; margin-bottom: 22px; }
+    .tl-item::before {
+      content:''; position:absolute; left:-24px; top:5px;
+      width:12px; height:12px; border-radius:50%;
+      background: var(--accent); border: 2px solid #fff;
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+    .tl-item strong { color: var(--primary); }
+
+    /* ── REFERENCES ── */
+    .ref-list { list-style: none; margin-top: 16px; }
+    .ref-list li {
+      font-size: 0.86rem; color: var(--muted); padding: 10px 0;
+      border-bottom: 1px solid var(--border); line-height: 1.5;
+    }
+    .ref-list li:last-child { border-bottom: none; }
+    .ref-num { color: var(--accent); font-weight: 700; margin-right: 8px; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #0d2f4d; color: #8ca0b8; text-align: center;
+      padding: 30px 20px; font-size: 0.82rem;
+    }
+    footer strong { color: #fff; }
+  
+  /* ── SITE NAV ── */
+  .site-nav{background:#0a1f33;padding:0 24px;position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(255,255,255,.08);}
+  .site-nav-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:16px;height:50px;flex-wrap:wrap;}
+  .site-nav-brand{color:#fff;font-weight:800;font-size:.95rem;text-decoration:none;white-space:nowrap;letter-spacing:-.2px;}
+  .site-nav-brand span{color:#e8670a;}
+  .site-nav-sep{color:rgba(255,255,255,.2);font-size:.8rem;}
+  .site-nav-links{display:flex;gap:2px;flex-wrap:wrap;}
+  .site-nav-links a{color:rgba(255,255,255,.6);font-size:.78rem;font-weight:500;text-decoration:none;padding:5px 10px;border-radius:4px;white-space:nowrap;transition:all .15s;}
+  .site-nav-links a:hover{color:#fff;background:rgba(255,255,255,.1);}
+  .site-nav-links a.current{color:#e8670a;background:rgba(232,103,10,.12);}
+
+</style>
+</head>
+<body>
+<div class="site-nav">
+  <div class="site-nav-inner">
+    <a href="index.html" class="site-nav-brand">Manage<span>Pain</span>Care</a>
+    <span class="site-nav-sep">|</span>
+    <nav class="site-nav-links">
+      <a href="science-centre.html">Science Centre</a>
+      <a href="mpc4-space-weather-chronic-pain.html" class="current">Space Weather</a>
+      <a href="mpc4-barometric-pressure-chronic-pain.html">Barometric Pressure</a>
+      <a href="mpc4-temperature-humidity-chronic-pain.html">Temp &amp; Humidity</a>
+      <a href="mpc4-condition-specific-weather-sensitivity.html">Conditions</a>
+      <a href="mpc4-glossary.html">Glossary</a>
+    </nav>
+  </div>
+</div>
+
+<header>
+  <div class="badge">MPC4 Science Centre</div>
+  <h1>Space Weather &amp; Chronic Pain</h1>
+  <p>Understanding how solar and geomagnetic activity affects pain sensitivity — and how MPC4 uses live NASA/NOAA data to help you plan ahead.</p>
+</header>
+
+<div class="container">
+
+  <!-- ══ SECTION 1: WHAT IS SPACE WEATHER ══ -->
+  <section id="what-is-space-weather">
+    <h2>What Is Space Weather?</h2>
+    <p>Space weather refers to the changing environmental conditions in near-Earth space, driven primarily by activity on the Sun. Unlike conventional weather (driven by atmospheric dynamics), space weather encompasses solar flares, coronal mass ejections (CMEs), solar wind streams, and the fluctuating strength of Earth's geomagnetic field.</p>
+    <p>These events are monitored continuously by NOAA's <strong>Space Weather Prediction Center (SWPC)</strong> and NASA satellites including the Deep Space Climate Observatory (DSCOVR) and the ACE spacecraft. Their real-time data feeds power the alerts you see in MPC4.</p>
+
+    <h3>Key Solar Events</h3>
+    <div class="cards">
+      <div class="card">
+        <div class="icon">☀️</div>
+        <h4>Solar Flares</h4>
+        <p>Intense bursts of electromagnetic radiation from the Sun's surface. Classified X, M, C, B by intensity. X-class flares cause HF radio blackouts within minutes.</p>
+      </div>
+      <div class="card">
+        <div class="icon">💨</div>
+        <h4>Coronal Mass Ejections (CMEs)</h4>
+        <p>Massive plasma clouds hurled into space. When Earth-directed, they arrive in 1–4 days and trigger geomagnetic storms — the main driver of biological effects.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🌊</div>
+        <h4>Solar Wind</h4>
+        <p>A constant stream of charged particles from the Sun. Speed typically ranges 300–800 km/s; high-speed streams compress Earth's magnetosphere and elevate the Kp index.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🧲</div>
+        <h4>Geomagnetic Storms</h4>
+        <p>Disturbances in Earth's magnetic field caused by CMEs or solar wind. Measured by the planetary Kp index (0–9). Storms above Kp 5 are associated with measurable biological effects.</p>
+      </div>
+      <div class="card">
+        <div class="icon">⚡</div>
+        <h4>Solar Energetic Particles (SEPs)</h4>
+        <p>High-energy protons and electrons accelerated by flares or CME shocks. Elevated proton flux affects autonomic nervous system regulation and circadian rhythm.</p>
+      </div>
+      <div class="card">
+        <div class="icon">☢️</div>
+        <h4>Cosmic Rays</h4>
+        <p>High-energy particles from outside our solar system. Their flux at ground level increases during solar minima and may influence biological systems through ionisation pathways.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 2: KP INDEX ══ -->
+  <section id="kp-index">
+    <h2>The Kp Index — Your Key Metric</h2>
+    <p>The <strong>planetary Kp index</strong> is the single most important space weather metric for health-related applications. It measures the global level of geomagnetic disturbance on a quasi-logarithmic scale from 0 (very quiet) to 9 (extreme storm). It is updated every 3 hours by NOAA and is available in real-time via the SWPC API.</p>
+
+    <table>
+      <thead>
+        <tr><th>Kp Range</th><th>Storm Level</th><th>Status</th><th>Biological Relevance</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>0 – 1</td><td>None</td><td><span class="pill pill-green">Quiet</span></td><td>Baseline conditions. Minimal geomagnetic influence on physiology.</td></tr>
+        <tr><td>2 – 3</td><td>None</td><td><span class="pill pill-green">Unsettled</span></td><td>Low activity. Most individuals unaffected.</td></tr>
+        <tr><td>4</td><td>None / G0</td><td><span class="pill pill-yellow">Active</span></td><td>Mildly elevated geomagnetic activity. Weather-sensitive individuals may notice subtle changes.</td></tr>
+        <tr><td>5</td><td>G1 – Minor</td><td><span class="pill pill-orange">Minor Storm</span></td><td>Pineal gland activity and melatonin conversion may be affected. Light sleep disruption possible. MPC4 issues a <strong>Yellow Advisory</strong>.</td></tr>
+        <tr><td>6 – 7</td><td>G2 – G3</td><td><span class="pill pill-red">Moderate–Strong</span></td><td>Documented disruption of melatonin/serotonin balance. Increased inflammatory markers reported with 2–4 day lag. MPC4 issues an <strong>Orange Alert</strong>.</td></tr>
+        <tr><td>8 – 9</td><td>G4 – G5</td><td><span class="pill pill-dark">Severe–Extreme</span></td><td>Significant autonomic nervous system disruption. Pain flare risk high. MPC4 issues a <strong>Red Alert</strong>.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <strong>Important:</strong> The biological response to geomagnetic storms is not instantaneous. Research shows inflammatory biomarker elevation typically peaks <strong>2–4 days after</strong> the geomagnetic event (Pahlen, 2018 [8]). MPC4 therefore uses <em>forecast</em> Kp data, not just current readings, to generate ahead-of-time alerts.
+    </div>
+  </section>
+
+  <!-- ══ SECTION 3: BIOLOGICAL MECHANISMS ══ -->
+  <section id="mechanisms">
+    <h2>How Space Weather Affects Chronic Pain — The Biology</h2>
+    <p>The connection between geomagnetic activity and chronic pain is not folklore — it is an active area of peer-reviewed research with several plausible and partially validated biological mechanisms. Below are the four primary pathways identified in the scientific literature.</p>
+
+    <h3>1. The Melatonin–Serotonin Pathway</h3>
+    <p>The pineal gland, which regulates the circadian hormone cycle, is sensitive to changes in ambient magnetic fields. Geomagnetic disturbances have been shown to suppress the enzyme activity (N-acetyltransferase and HIOMT) responsible for converting serotonin into melatonin [1, 2]. The result is reduced melatonin output during geomagnetically active periods.</p>
+    <p>This matters for pain patients because melatonin is a direct analgesic modulator. A landmark 2016 review by Danilov &amp; Kurganova documented melatonin's pain-reducing effects across fibromyalgia, chronic back pain, headaches, and irritable bowel syndrome [3]. A 2021 meta-analysis (Chaudhry et al.) confirmed that low melatonin is associated with disrupted sleep architecture and amplified central sensitisation in chronic pain [4]. Fibromyalgia patients are known to have chronically low serotonin and melatonin levels [5], making them disproportionately vulnerable to geomagnetic disruption of this pathway.</p>
+
+    <h3>2. Circadian Rhythm Disruption and Neuroinflammation</h3>
+    <p>A 2023 review in <em>Biomedical Journal</em> (Martel et al.) demonstrated that geomagnetic field weakening and disturbance disrupt the molecular clockwork governing circadian gene expression [6]. Disrupted circadian rhythms are a well-established driver of pro-inflammatory cytokine release (TNF-α, IL-6, IL-1β). For chronic pain conditions where neuroinflammation plays a central role — such as fibromyalgia, rheumatoid arthritis, and neuropathic pain — this represents a clinically meaningful trigger pathway.</p>
+
+    <h3>3. Inflammatory Biomarker Elevation with Lag Effect</h3>
+    <p>A multi-variable study by Pahlen (2018) tracking solar variability against clinical laboratory parameters in human volunteers found measurable associations between geomagnetic disturbances and elevated inflammatory markers, with the effect most pronounced approximately 3–4 days after the geomagnetic event [8]. This lag — likely due to the time required for cytokine cascades to amplify — is critical for clinical prediction. It means a storm on Monday may express as a pain flare by Thursday or Friday.</p>
+
+    <h3>4. Autonomic Nervous System Dysregulation</h3>
+    <p>Research by Zenchenko, Khorseva, and Breus (multiple studies, 2021–2025) has extensively documented synchronisation effects between geomagnetic field oscillations and human heart rate variability (HRV) — a proxy for autonomic nervous system (ANS) balance [9, 10]. Reduced HRV and sympathetic dominance during geomagnetic storms correlates with increased pain sensitivity, heightened stress response, and impaired descending pain inhibition. Their 2021 MDPI review identified plausible effects on cardiovascular, neuroendocrine, and immune systems during space weather events [9].</p>
+
+    <h3>5. Human Physiological Response Data</h3>
+    <p>A 2021 multi-region study by Mavromichalaki et al. in <em>Atmosphere</em> directly tracked physiological parameters against Kp index readings across multiple geographic populations and found significant correlations during geomagnetic storm periods, including during very low geomagnetic activity (a potential rebound effect) [11]. This supports a non-linear, bidirectional relationship that individual pain tracking apps are well-placed to capture.</p>
+
+    <div class="callout">
+      <strong>What this means for you:</strong> Your sensitivity to space weather is highly individual. MPC4 helps you build a personal correlation profile over time — so you can discover whether you are a "weather-sensitive" responder and how strongly your specific condition is affected.
+    </div>
+  </section>
+
+  <!-- ══ SECTION 4: HOW MPC4 USES THE DATA ══ -->
+  <section id="how-mpc4-uses-data">
+    <h2>How MPC4 Uses Space Weather Data</h2>
+    <p>MPC4 pulls live and forecast data from the <strong>NOAA Space Weather Prediction Center</strong> free public API at <code>https://services.swpc.noaa.gov/</code>. All data is free, public-domain, and updated in near real-time. No API key is required.</p>
+
+    <h3>Data Sources &amp; Endpoints</h3>
+    <table class="endpoint-table">
+      <thead>
+        <tr><th>Metric</th><th>Endpoint</th><th>Update Frequency</th><th>Use in MPC4</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Planetary Kp Index</strong></td>
+          <td><code>/json/planetary_k_index_1m.json</code></td>
+          <td>1 minute</td>
+          <td>Primary geomagnetic disturbance score; drives MPC4 alert level</td>
+        </tr>
+        <tr>
+          <td><strong>3-Day Kp Forecast</strong></td>
+          <td><code>/products/3-day-forecast.txt</code></td>
+          <td>6 hours</td>
+          <td>Ahead-of-time pain flare risk alerts (leverages 3–4 day lag model)</td>
+        </tr>
+        <tr>
+          <td><strong>Solar Wind Speed &amp; Density</strong></td>
+          <td><code>/json/rtsw/rtsw_wind_1m.json</code></td>
+          <td>1 minute</td>
+          <td>Early warning before Kp rises; precursor to geomagnetic storms</td>
+        </tr>
+        <tr>
+          <td><strong>Geomagnetic Storm Alerts</strong></td>
+          <td><code>/products/alerts.json</code></td>
+          <td>Continuous</td>
+          <td>Triggers push notifications and in-app banners</td>
+        </tr>
+        <tr>
+          <td><strong>Solar Flare Probabilities</strong></td>
+          <td><code>/json/solar_probabilities.json</code></td>
+          <td>6 hours</td>
+          <td>X-ray flare risk; secondary contribution to daily risk score</td>
+        </tr>
+        <tr>
+          <td><strong>Proton Flux (SEP Events)</strong></td>
+          <td><code>/json/goes/primary/integral-protons-1-day.json</code></td>
+          <td>5 minutes</td>
+          <td>Elevated proton events linked to ANS disruption</td>
+        </tr>
+        <tr>
+          <td><strong>Solar Radio Flux (F10.7)</strong></td>
+          <td><code>/json/solar-radio-flux.json</code></td>
+          <td>Daily</td>
+          <td>Background solar activity level; used in weekly trend reports</td>
+        </tr>
+        <tr>
+          <td><strong>45-Day Outlook</strong></td>
+          <td><code>/json/45-day-forecast.json</code></td>
+          <td>Daily</td>
+          <td>Long-range planning feature for medical appointments &amp; activities</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>MPC4 Daily Risk Score — How It Is Calculated</h3>
+    <p>The MPC4 Space Weather Risk Score (0–10) is a composite index calculated from the following inputs, applied with the 3-day forecast window to account for the inflammatory lag:</p>
+
+    <div class="code-wrap">
+      <div class="code-label">JavaScript — Risk Score Algorithm (Simplified)</div>
+      <pre><span class="cmt">// MPC4 Space Weather Risk Score (0–10)</span>
+<span class="cmt">// Weights derived from biological pathway significance</span>
+
+<span class="kw">function</span> <span class="fn">calculateSpaceWeatherRiskScore</span>(data) {
+  <span class="kw">const</span> { kpCurrent, kpForecast72h, solarWindSpeed, protonFlux, solarFlareProb } = data;
+
+  <span class="cmt">// 1. Kp index component (most significant — 45% weight)</span>
+  <span class="kw">const</span> kpScore = Math.<span class="fn">min</span>(kpCurrent / 9, 1) * 4.5;
+
+  <span class="cmt">// 2. Forecast Kp component — anticipates lag effect (25% weight)</span>
+  <span class="kw">const</span> forecastScore = Math.<span class="fn">min</span>(kpForecast72h / 9, 1) * 2.5;
+
+  <span class="cmt">// 3. Solar wind speed (300–800 km/s range, 15% weight)</span>
+  <span class="kw">const</span> windScore = Math.<span class="fn">min</span>((solarWindSpeed - 300) / 500, 1) * 1.5;
+
+  <span class="cmt">// 4. Proton flux — log scale (10% weight)</span>
+  <span class="kw">const</span> protonScore = protonFlux &gt; 10 ? Math.<span class="fn">min</span>(Math.<span class="fn">log10</span>(protonFlux) / 4, 1) * 1.0 : 0;
+
+  <span class="cmt">// 5. X-flare probability component (5% weight)</span>
+  <span class="kw">const</span> flareScore = (solarFlareProb.xClass / 100) * 0.5;
+
+  <span class="kw">const</span> totalScore = kpScore + forecastScore + windScore + protonScore + flareScore;
+  <span class="kw">return</span> Math.<span class="fn">round</span>(Math.<span class="fn">min</span>(totalScore, 10) * 10) / 10;
+}
+
+<span class="cmt">// Alert thresholds</span>
+<span class="cmt">// Score 0–3  → Green  (Low Risk)</span>
+<span class="cmt">// Score 3–5  → Yellow (Elevated — monitor symptoms)</span>
+<span class="cmt">// Score 5–7  → Orange (High — prepare for possible flare)</span>
+<span class="cmt">// Score 7–10 → Red    (Very High — take proactive steps)</span></pre>
+    </div>
+
+    <h3>Fetching Live Kp Data — Example</h3>
+    <div class="code-wrap">
+      <div class="code-label">JavaScript — Live Kp Fetch</div>
+      <pre><span class="kw">async function</span> <span class="fn">getLatestKp</span>() {
+  <span class="kw">const</span> url = <span class="str">'https://services.swpc.noaa.gov/json/planetary_k_index_1m.json'</span>;
+  <span class="kw">const</span> response = <span class="kw">await</span> <span class="fn">fetch</span>(url);
+  <span class="kw">const</span> data = <span class="kw">await</span> response.<span class="fn">json</span>();
+
+  <span class="cmt">// Each entry: [time_tag, kp, a_running, station_count]</span>
+  <span class="kw">const</span> latest = data[data.length - 1];
+  <span class="kw">return</span> {
+    timestamp: latest[0],
+    kp:        latest[1],
+  };
+}
+
+<span class="cmt">// Example response entry:</span>
+<span class="cmt">// ["2026-05-02 14:00:00.000", 3.67, 15, 13]</span></pre>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 5: WHAT TO DO ══ -->
+  <section id="what-to-do">
+    <h2>What to Do During High Space Weather Activity</h2>
+    <p>When MPC4 issues an Orange or Red space weather alert, consider these evidence-informed steps to minimise the impact on your pain levels:</p>
+
+    <div class="timeline">
+      <div class="tl-item"><strong>Prioritise sleep hygiene.</strong> Since melatonin suppression is the primary mechanism, protecting your sleep environment becomes critical during storm periods. Keep your bedroom dark, cool, and screen-free for at least 1 hour before bed.</div>
+      <div class="tl-item"><strong>Reduce inflammatory dietary load.</strong> Avoid processed foods, refined sugar, and alcohol in the 24–72 hours around a forecast storm peak. These amplify the cytokine response already elevated by geomagnetic activity.</div>
+      <div class="tl-item"><strong>Adjust activity planning.</strong> Reschedule physically demanding activities or appointments requiring high cognitive load to quieter space weather windows. Use the MPC4 45-day calendar view for forward planning.</div>
+      <div class="tl-item"><strong>Discuss melatonin supplementation with your clinician.</strong> Some pain specialists have begun using low-dose melatonin supplementation (0.5–3 mg) specifically during geomagnetically active periods, based on the research by Danilov &amp; Kurganova [3] and Kaur &amp; Shyu [5].</div>
+      <div class="tl-item"><strong>Track and log your symptoms.</strong> MPC4's correlation tracker maps your pain diary against Kp index automatically. Over 4–8 weeks you will see whether you are a high-sensitivity responder — and how strong your personal lag effect is.</div>
+    </div>
+
+    <div class="callout">
+      <strong>Disclaimer:</strong> MPC4 provides educational and self-tracking tools. The space weather data and risk scores are not a substitute for medical advice. Always discuss changes to your pain management plan with a qualified healthcare professional.
+    </div>
+  </section>
+
+  <!-- ══ SECTION 6: REFERENCES ══ -->
+  <section id="references">
+    <h2>References &amp; Further Reading</h2>
+    <p>The following peer-reviewed studies and technical sources underpin the science presented on this page. All citations follow APA 7th edition format.</p>
+    <ol class="ref-list">
+      <li><span class="ref-num">[1]</span> Woldańska-Okońska, M., &amp; Koszela, K. (2022). How magnetic fields (magnetotherapy and magnetic stimulation) influence serum serotonin concentrations in patients with low back pain — clinical observation study. <em>International Journal of Environmental Research and Public Health, 19</em>(22), 14955. <a href="https://doi.org/10.3390/ijerph192214955" target="_blank">https://doi.org/10.3390/ijerph192214955</a></li>
+      <li><span class="ref-num">[2]</span> Woldańska-Okońska, M., &amp; Koszela, K. (2024). The physiological impact of melatonin, its effect on the course of diseases and their therapy and the effect of magnetic fields on melatonin secretion. <em>Biomolecules, 14</em>(3), 366. <a href="https://doi.org/10.3390/biom14030366" target="_blank">https://doi.org/10.3390/biom14030366</a></li>
+      <li><span class="ref-num">[3]</span> Danilov, A., &amp; Kurganova, J. (2016). Melatonin in chronic pain syndromes. <em>Pain and Therapy, 5</em>(1), 1–17. <a href="https://doi.org/10.1007/s40122-016-0049-y" target="_blank">https://doi.org/10.1007/s40122-016-0049-y</a></li>
+      <li><span class="ref-num">[4]</span> Chaudhry, S. R., Stadlbauer, A., Buchfelder, M., &amp; Kinfe, T. M. (2021). Melatonin moderates the triangle of chronic pain, sleep architecture and immunometabolic traffic. <em>Biomedicines, 9</em>(9), 1139. <a href="https://doi.org/10.3390/biomedicines9091139" target="_blank">https://doi.org/10.3390/biomedicines9091139</a></li>
+      <li><span class="ref-num">[5]</span> Kaur, T., &amp; Shyu, B. C. (2018). Melatonin: a new-generation therapy for reducing chronic pain and improving sleep disorder-related pain. In <em>Advances in Experimental Medicine and Biology: Mechanisms and Modulation of Chronic Pain</em> (pp. 229–251). Springer.</li>
+      <li><span class="ref-num">[6]</span> Martel, J., Chang, S. H., Chevalier, G., Ojcius, D. M., &amp; Young, J. D. (2023). Influence of electromagnetic fields on the circadian rhythm: Implications for human health and disease. <em>Biomedical Journal, 46</em>(1), 48–59. <a href="https://doi.org/10.1016/j.bj.2022.09.000" target="_blank">https://doi.org/10.1016/j.bj.2022.09.000</a></li>
+      <li><span class="ref-num">[7]</span> Horvath, G., Nagy, K., Tuboly, G., &amp; Nagy, E. (2023). Pain and weather associations — action mechanisms; personalized profiling. <em>Brain Research Bulletin, 196</em>, 12–22. <a href="https://doi.org/10.1016/j.brainresbull.2023.03.004" target="_blank">https://doi.org/10.1016/j.brainresbull.2023.03.004</a></li>
+      <li><span class="ref-num">[8]</span> Pahlen, T. S. (2018). <em>Association of solar variability and space weather factors with parameters of clinical chemistry, hematology, hemostasis, inflammatory biomarkers and heart rate variability</em> [Research Report]. ResearchGate. <a href="https://www.researchgate.net" target="_blank">https://www.researchgate.net</a></li>
+      <li><span class="ref-num">[9]</span> Zenchenko, T. A., &amp; Breus, T. K. (2021). The possible effect of space weather factors on various physiological systems of the human organism. <em>Atmosphere, 12</em>(3), 346. <a href="https://doi.org/10.3390/atmos12030346" target="_blank">https://doi.org/10.3390/atmos12030346</a></li>
+      <li><span class="ref-num">[10]</span> Zenchenko, T. A., Khorseva, N. I., Breus, T. K., &amp; Drozdov, A. V. (2025). Effect of synchronization between millihertz geomagnetic field variations and human heart rate oscillations during strong magnetic storms. <em>Atmosphere, 16</em>(2), 189. <a href="https://doi.org/10.3390/atmos16020189" target="_blank">https://doi.org/10.3390/atmos16020189</a></li>
+      <li><span class="ref-num">[11]</span> Mavromichalaki, H., Papailiou, M. C., Gerontidou, M., et al. (2021). Human physiological parameters related to solar and geomagnetic disturbances: data from different geographic regions. <em>Atmosphere, 12</em>(3), 322. <a href="https://doi.org/10.3390/atmos12030322" target="_blank">https://doi.org/10.3390/atmos12030322</a></li>
+      <li><span class="ref-num">[12]</span> Palmer, S. J., Rycroft, M. J., &amp; Cermack, M. (2006). Solar and geomagnetic activity, extremely low frequency magnetic and electric fields and human health at the Earth's surface. <em>Surveys in Geophysics, 27</em>(5), 557–595. <a href="https://doi.org/10.1007/s10712-006-9010-7" target="_blank">https://doi.org/10.1007/s10712-006-9010-7</a></li>
+      <li><span class="ref-num">[13]</span> Krylov, V. V. (2017). Biological effects related to geomagnetic activity and possible mechanisms. <em>Bioelectromagnetics, 38</em>(7), 497–510. <a href="https://doi.org/10.1002/bem.22062" target="_blank">https://doi.org/10.1002/bem.22062</a></li>
+      <li><span class="ref-num">[14]</span> Popovych, I., Gozhenko, A., &amp; Badiuk, N. (2021). Relationships between geomagnetic Ap-index and parameters of the immunity in patients with multiple sclerosis and radiculopathies. <em>Journal of Education, Health and Sport, 11</em>(10), 55–66.</li>
+      <li><span class="ref-num">[15]</span> NOAA Space Weather Prediction Center. (2026). <em>SWPC data services API documentation</em>. National Oceanic and Atmospheric Administration. <a href="https://services.swpc.noaa.gov/" target="_blank">https://services.swpc.noaa.gov/</a></li>
+    </ol>
+  </section>
+
+</div><!-- /container -->
+
+<footer>
+  <strong>MPC4 — Manage Pain &amp; Chronic Conditions</strong><br/>
+  Space weather data provided by <a href="https://www.swpc.noaa.gov/" style="color:#8ca0b8">NOAA Space Weather Prediction Center</a> (public domain).<br/>
+  This page is for informational purposes. Not a substitute for medical advice.<br/>
+  Last updated: May 2026
+</footer>
+
+</body>
+</html>

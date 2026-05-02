@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Temperature, Humidity &amp; Chronic Pain | MPC4</title>
+<style>
+  :root { --primary:#1a4f7a;--accent:#e8670a;--bg:#f5f8fc;--card:#ffffff;--text:#222831;--muted:#5a6473;--border:#d0dae6;--warn:#fff4e0;--warn-b:#e8670a; }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;}
+  header{background:linear-gradient(135deg,var(--primary) 0%,#0d2f4d 100%);color:#fff;padding:60px 24px 48px;text-align:center;}
+  header .badge{display:inline-block;background:var(--accent);color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:16px;}
+  header h1{font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;margin-bottom:12px;}
+  header p{font-size:1.05rem;opacity:.85;max-width:640px;margin:0 auto;}
+  .container{max-width:900px;margin:0 auto;padding:0 20px;}
+  section{padding:52px 0;border-bottom:1px solid var(--border);}
+  section:last-of-type{border-bottom:none;}
+  h2{font-size:1.45rem;font-weight:700;color:var(--primary);margin-bottom:14px;padding-bottom:8px;border-bottom:3px solid var(--accent);display:inline-block;}
+  h3{font-size:1.1rem;font-weight:700;color:var(--primary);margin:28px 0 8px;}
+  p{margin-bottom:14px;}
+  a{color:var(--accent);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  .callout{background:var(--warn);border-left:4px solid var(--warn-b);padding:16px 20px;border-radius:6px;margin:24px 0;font-size:.95rem;}
+  .callout strong{color:var(--warn-b);}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin-top:24px;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:22px;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+  .card .icon{font-size:1.8rem;margin-bottom:10px;}
+  .card h4{font-size:.95rem;font-weight:700;color:var(--primary);margin-bottom:6px;}
+  .card p{font-size:.88rem;color:var(--muted);margin:0;}
+  table{width:100%;border-collapse:collapse;margin-top:20px;font-size:.92rem;}
+  th{background:var(--primary);color:#fff;padding:10px 14px;text-align:left;}
+  td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top;}
+  tr:nth-child(even) td{background:#f0f4f9;}
+  .pill{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.78rem;font-weight:700;}
+  .pill-green{background:#d4edda;color:#155724;}
+  .pill-yellow{background:#fff3cd;color:#856404;}
+  .pill-orange{background:#fde8c8;color:#8a4500;}
+  .pill-red{background:#f8d7da;color:#721c24;}
+  .timeline{position:relative;padding-left:28px;margin-top:20px;}
+  .timeline::before{content:'';position:absolute;left:8px;top:4px;bottom:4px;width:2px;background:var(--border);}
+  .tl-item{position:relative;margin-bottom:22px;}
+  .tl-item::before{content:'';position:absolute;left:-24px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--accent);border:2px solid #fff;box-shadow:0 0 0 2px var(--accent);}
+  .tl-item strong{color:var(--primary);}
+  .ref-list{list-style:none;margin-top:16px;}
+  .ref-list li{font-size:.86rem;color:var(--muted);padding:10px 0;border-bottom:1px solid var(--border);line-height:1.5;}
+  .ref-list li:last-child{border-bottom:none;}
+  .ref-num{color:var(--accent);font-weight:700;margin-right:8px;}
+  footer{background:#0d2f4d;color:#8ca0b8;text-align:center;padding:30px 20px;font-size:.82rem;}
+  footer strong{color:#fff;}
+  footer a{color:#8ca0b8;}
+
+  /* ── SITE NAV ── */
+  .site-nav{background:#0a1f33;padding:0 24px;position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(255,255,255,.08);}
+  .site-nav-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:16px;height:50px;flex-wrap:wrap;}
+  .site-nav-brand{color:#fff;font-weight:800;font-size:.95rem;text-decoration:none;white-space:nowrap;letter-spacing:-.2px;}
+  .site-nav-brand span{color:#e8670a;}
+  .site-nav-sep{color:rgba(255,255,255,.2);font-size:.8rem;}
+  .site-nav-links{display:flex;gap:2px;flex-wrap:wrap;}
+  .site-nav-links a{color:rgba(255,255,255,.6);font-size:.78rem;font-weight:500;text-decoration:none;padding:5px 10px;border-radius:4px;white-space:nowrap;transition:all .15s;}
+  .site-nav-links a:hover{color:#fff;background:rgba(255,255,255,.1);}
+  .site-nav-links a.current{color:#e8670a;background:rgba(232,103,10,.12);}
+
+</style>
+</head>
+<body>
+<div class="site-nav">
+  <div class="site-nav-inner">
+    <a href="index.html" class="site-nav-brand">Manage<span>Pain</span>Care</a>
+    <span class="site-nav-sep">|</span>
+    <nav class="site-nav-links">
+      <a href="science-centre.html">Science Centre</a>
+      <a href="mpc4-space-weather-chronic-pain.html">Space Weather</a>
+      <a href="mpc4-barometric-pressure-chronic-pain.html">Barometric Pressure</a>
+      <a href="mpc4-temperature-humidity-chronic-pain.html" class="current">Temp &amp; Humidity</a>
+      <a href="mpc4-condition-specific-weather-sensitivity.html">Conditions</a>
+      <a href="mpc4-glossary.html">Glossary</a>
+    </nav>
+  </div>
+</div>
+<header>
+  <div class="badge">MPC4 Science Centre</div>
+  <h1>Temperature, Humidity &amp; Chronic Pain</h1>
+  <p>How ambient temperature and relative humidity interact with chronic pain conditions — the evidence and what it means for you.</p>
+</header>
+<div class="container">
+
+<section>
+  <h2>Overview</h2>
+  <p>Temperature and humidity are the two most widely studied conventional weather variables in pain research. While results across individual studies have sometimes been mixed — partly due to methodological differences — systematic reviews and meta-analyses now show consistent patterns: cold temperature, high humidity, and particularly their combination are the most reliably reported triggers across multiple chronic pain conditions [1, 2, 6].</p>
+  <p>A landmark 2025 systematic review and meta-analysis by Hu et al. in <em>Autoimmunity Reviews</em> synthesised data from multiple populations and confirmed that temperature and atmospheric pressure are the weather variables with the strongest evidence base for influencing rheumatoid arthritis symptoms [5].</p>
+  <div class="cards">
+    <div class="card"><div class="icon">🌡️</div><h4>Cold Temperature</h4><p>The most consistently reported pain trigger. Cold stiffens connective tissue and periarticular muscle, reduces synovial fluid viscosity, and slows nerve conduction velocity in superficial sensory fibres.</p></div>
+    <div class="card"><div class="icon">💧</div><h4>High Humidity</h4><p>Often amplifies the effect of cold. High relative humidity (&gt;70%) is independently associated with increased joint pain in RA patients and fibromyalgia flares in multiple studies [1, 3].</p></div>
+    <div class="card"><div class="icon">🌤️</div><h4>Warm &amp; Dry</h4><p>Generally the most comfortable conditions for pain patients. Many studies show pain reduction in warm, low-humidity environments — though extreme heat can trigger pain in some neuropathic conditions.</p></div>
+    <div class="card"><div class="icon">🌩️</div><h4>Rapid Transitions</h4><p>The pace of change may matter as much as the end state. Rapid temperature drops and humidity spikes — typical of storm fronts — are more disruptive than gradual seasonal shifts.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>Temperature Effects by Condition</h2>
+  <h3>Rheumatoid Arthritis</h3>
+  <p>A seminal study by Strusberg et al. (2002) in the <em>Journal of Rheumatology</em> — one of the most cited in this field — found that RA patients reported significantly more pain with low temperature and high humidity, while some described more pain with high temperatures and atmospheric pressure changes [1]. A later systematic review (Smedslund &amp; Hagen, 2011) found that less than 25% of RA patients showed a clear temperature–pain correlation at the group level, but noted that individual-level sensitivity was substantially higher — reinforcing the need for personalised tracking [2].</p>
+
+  <h3>Osteoarthritis</h3>
+  <p>Temperature effects in osteoarthritis are well documented. Cold reduces synovial fluid production and increases viscosity of the remaining fluid, effectively making joints stiffer and more painful. A 2023 meta-analysis by Wang et al. in <em>Annals of Medicine</em> covering multiple OA studies confirmed temperature as a significant predictor of OA pain, with low temperature showing the strongest association [6].</p>
+
+  <h3>Fibromyalgia</h3>
+  <p>Fibromyalgia patients are among the most weather-sensitive of all chronic pain groups. Fagerlund et al. (2019) found that lower temperature significantly predicted higher pain scores in fibromyalgia patients, with humidity acting as a moderating variable [7]. The heightened sensitivity is thought to arise from the central sensitisation and small-fibre neuropathy common in fibromyalgia, which lowers the threshold at which peripheral thermal stimuli generate conscious pain.</p>
+
+  <h3>Neuropathic Pain</h3>
+  <p>Cold allodynia — pain triggered by non-painful cold stimuli — is a recognised feature of several neuropathic conditions including diabetic peripheral neuropathy, post-herpetic neuralgia, and CRPS. Humidity independently worsened painful diabetic neuropathy in a 2023 case-crossover study by Xin et al. [4]. Temperature fluctuations are also reported to trigger phantom limb pain and post-surgical nerve pain.</p>
+
+  <h3>Chronic Back Pain</h3>
+  <p>A 2020 meteorological analysis by Schultz et al. in the <em>Bulletin of the American Meteorological Society</em> identified specific weather patterns associated with pain flares in chronic pain sufferers, including temperature-humidity anomalies at low atmospheric levels — confirming that back pain is sensitive to the full range of weather variables, not just pressure [8].</p>
+</section>
+
+<section>
+  <h2>Humidity: The Underrated Variable</h2>
+  <p>Relative humidity is often discussed less than temperature, yet research increasingly shows it deserves equal attention — particularly when it acts synergistically with cold temperature and falling pressure [1, 3, 7].</p>
+  <p>At the physiological level, high humidity affects thermoregulation by reducing the efficiency of evaporative cooling. In patients with autonomic nervous system dysfunction — common in fibromyalgia, CRPS, and some neuropathic conditions — impaired thermoregulation amplifies the stress response and can worsen pain sensitivity. High humidity has also been linked to increased perceived effort and fatigue during physical activity, which for chronic pain patients can lower their exercise tolerance and worsen deconditioning cycles.</p>
+
+  <h3>The Cold + Wet Combination</h3>
+  <p>Multiple studies converge on cold temperature combined with high humidity as the worst combination for musculoskeletal pain. Patberg's 2005 study specifically tracking temperature and humidity against daily RA pain scores found that low temperature with high humidity on the same day was the single strongest weather predictor of pain [3]. MPC4 therefore calculates a combined Temperature-Humidity Pain Index (THPI) rather than treating these variables independently.</p>
+
+  <div class="callout">
+    <strong>MPC4 Temperature-Humidity Pain Index (THPI):</strong> A composite score combining ambient temperature, relative humidity, and rate of temperature change. A THPI in the orange or red zone — typically cold (&lt;8°C / 46°F) with high humidity (&gt;75%) and falling temperature — triggers an MPC4 advisory regardless of barometric conditions.
+  </div>
+</section>
+
+<section>
+  <h2>Practical Strategies</h2>
+  <div class="timeline">
+    <div class="tl-item"><strong>Layer clothing proactively.</strong> Keeping joints warm before going out in cold or damp conditions — not just reacting once pain starts — is consistently recommended in physiotherapy guidance. Thermal joint supports can be particularly useful during cold-humid weather windows.</div>
+    <div class="tl-item"><strong>Manage indoor humidity.</strong> Aim to maintain indoor relative humidity between 40–60%. Dehumidifiers in summer and humidifiers in dry winters help maintain an optimal environment. Extremes in either direction worsen pain for different reasons.</div>
+    <div class="tl-item"><strong>Warm water therapy.</strong> Hydrotherapy or warm baths during cold-damp weather periods reduce peripheral vasoconstriction, relax periarticular muscles, and temporarily normalise joint temperature — all of which reduce pain sensitivity.</div>
+    <div class="tl-item"><strong>Pace activity around the forecast.</strong> Use MPC4's 3-day weather outlook to schedule more demanding activities on forecast warm, dry days and protect cold-wet days for lighter tasks or recovery.</div>
+    <div class="tl-item"><strong>Vitamin D awareness.</strong> Extended cold, overcast weather reduces sun exposure and, over weeks, can lower vitamin D levels — which are independently associated with chronic pain amplification. Discuss supplementation with your clinician during winter months.</div>
+  </div>
+  <div class="callout">
+    <strong>Disclaimer:</strong> This information is educational. Always consult your healthcare provider before making changes to your pain management plan.
+  </div>
+</section>
+
+<section id="references">
+  <h2>References</h2>
+  <ol class="ref-list">
+    <li><span class="ref-num">[1]</span> Strusberg, I., Mendelberg, R. C., Serra, H. A., et al. (2002). Influence of weather conditions on rheumatic pain. <em>Journal of Rheumatology, 29</em>(2), 335–338.</li>
+    <li><span class="ref-num">[2]</span> Smedslund, G., &amp; Hagen, K. B. (2011). Does rain really cause pain? A systematic review of the associations between weather factors and severity of pain in people with rheumatoid arthritis. <em>European Journal of Pain, 15</em>(1), 5–10. <a href="https://doi.org/10.1016/j.ejpain.2010.05.003" target="_blank">https://doi.org/10.1016/j.ejpain.2010.05.003</a></li>
+    <li><span class="ref-num">[3]</span> Patberg, W. R. (2005). Effect of temperature and humidity on daily pain score in rheumatoid arthritis. In <em>Weather and rheumatoid arthritis</em>. University of Twente.</li>
+    <li><span class="ref-num">[4]</span> Xin, L., Zhu, Y., Zhao, J., Fang, Y., &amp; Xie, J. (2023). Association between short-term exposure to extreme humidity and painful diabetic neuropathy: a case-crossover analysis. <em>Environmental Science and Pollution Research, 30</em>, 24511–24521. <a href="https://doi.org/10.1007/s11356-022-23773-8" target="_blank">https://doi.org/10.1007/s11356-022-23773-8</a></li>
+    <li><span class="ref-num">[5]</span> Hu, C., Wu, J., Luo, Y., Zhu, Y., Chang, R., &amp; Qian, S. (2025). Association between weather conditions and rheumatoid arthritis: a systematic review and meta-analysis. <em>Autoimmunity Reviews, 24</em>(3), 103751. <a href="https://doi.org/10.1016/j.autrev.2025.103751" target="_blank">https://doi.org/10.1016/j.autrev.2025.103751</a></li>
+    <li><span class="ref-num">[6]</span> Wang, L., Xu, Q., Chen, Y., Zhu, Z., &amp; Cao, Y. (2023). Associations between weather conditions and osteoarthritis pain: a systematic review and meta-analysis. <em>Annals of Medicine, 55</em>(1), 1–14. <a href="https://doi.org/10.1080/07853890.2022.2163736" target="_blank">https://doi.org/10.1080/07853890.2022.2163736</a></li>
+    <li><span class="ref-num">[7]</span> Fagerlund, A. J., Iversen, M., Ekeland, A., &amp; Moen, C. M. (2019). Blame it on the weather? The association between pain in fibromyalgia, relative humidity, temperature and barometric pressure. <em>PLOS ONE, 14</em>(5), e0216902. <a href="https://doi.org/10.1371/journal.pone.0216902" target="_blank">https://doi.org/10.1371/journal.pone.0216902</a></li>
+    <li><span class="ref-num">[8]</span> Schultz, D. M., Beukenhorst, A. L., Yimer, B. B., et al. (2020). Weather patterns associated with pain in chronic-pain sufferers. <em>Bulletin of the American Meteorological Society, 101</em>(8), E1199–E1208. <a href="https://doi.org/10.1175/BAMS-D-19-0247.1" target="_blank">https://doi.org/10.1175/BAMS-D-19-0247.1</a></li>
+    <li><span class="ref-num">[9]</span> Jevotovsky, D. S., Oehlermarx, W., Chen, T., et al. (2025). Weathering the pain: ambient temperature's role in chronic pain syndromes. <em>Current Pain and Headache Reports, 29</em>, 12. <a href="https://doi.org/10.1007/s11916-025-01321-0" target="_blank">https://doi.org/10.1007/s11916-025-01321-0</a></li>
+    <li><span class="ref-num">[10]</span> Ferreira, M. L., Hunter, D. J., Fu, A., Raihana, S., et al. (2024). Come rain or shine: is weather a risk factor for musculoskeletal pain? A systematic review with meta-analysis of case-crossover studies. <em>Seminars in Arthritis and Rheumatism, 64</em>, 152338. <a href="https://doi.org/10.1016/j.semarthrit.2023.152338" target="_blank">https://doi.org/10.1016/j.semarthrit.2023.152338</a></li>
+  </ol>
+</section>
+</div>
+<footer><strong>MPC4 — Manage Pain &amp; Chronic Conditions</strong><br/>Weather data sourced from Open-Meteo (open-source, CC BY 4.0). This page is for informational purposes only. Not a substitute for medical advice.<br/>Last updated: May 2026</footer>
+</body></html>

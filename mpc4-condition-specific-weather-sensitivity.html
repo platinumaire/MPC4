@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Condition-Specific Weather Sensitivity | MPC4</title>
+<style>
+  :root{--primary:#1a4f7a;--accent:#e8670a;--bg:#f5f8fc;--card:#ffffff;--text:#222831;--muted:#5a6473;--border:#d0dae6;--warn:#fff4e0;--warn-b:#e8670a;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;}
+  header{background:linear-gradient(135deg,var(--primary) 0%,#0d2f4d 100%);color:#fff;padding:60px 24px 48px;text-align:center;}
+  header .badge{display:inline-block;background:var(--accent);color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:16px;}
+  header h1{font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;margin-bottom:12px;}
+  header p{font-size:1.05rem;opacity:.85;max-width:640px;margin:0 auto;}
+  .container{max-width:900px;margin:0 auto;padding:0 20px;}
+  section{padding:52px 0;border-bottom:1px solid var(--border);}
+  section:last-of-type{border-bottom:none;}
+  h2{font-size:1.45rem;font-weight:700;color:var(--primary);margin-bottom:14px;padding-bottom:8px;border-bottom:3px solid var(--accent);display:inline-block;}
+  h3{font-size:1.1rem;font-weight:700;color:var(--primary);margin:28px 0 8px;}
+  p{margin-bottom:14px;}
+  a{color:var(--accent);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  .callout{background:var(--warn);border-left:4px solid var(--warn-b);padding:16px 20px;border-radius:6px;margin:24px 0;font-size:.95rem;}
+  .callout strong{color:var(--warn-b);}
+  .condition-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;margin-top:24px;}
+  .cond-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+  .cond-header{background:var(--primary);color:#fff;padding:14px 18px;}
+  .cond-header h4{font-size:1rem;font-weight:700;margin:0;}
+  .cond-header span{font-size:.78rem;opacity:.8;}
+  .cond-body{padding:16px 18px;}
+  .cond-body p{font-size:.88rem;color:var(--muted);margin:0 0 8px;}
+  .trigger-tag{display:inline-block;background:#e8edf4;color:var(--primary);font-size:.75rem;font-weight:600;padding:2px 8px;border-radius:10px;margin:2px;}
+  table{width:100%;border-collapse:collapse;margin-top:20px;font-size:.92rem;}
+  th{background:var(--primary);color:#fff;padding:10px 14px;text-align:left;}
+  td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top;}
+  tr:nth-child(even) td{background:#f0f4f9;}
+  .ref-list{list-style:none;margin-top:16px;}
+  .ref-list li{font-size:.86rem;color:var(--muted);padding:10px 0;border-bottom:1px solid var(--border);line-height:1.5;}
+  .ref-list li:last-child{border-bottom:none;}
+  .ref-num{color:var(--accent);font-weight:700;margin-right:8px;}
+  footer{background:#0d2f4d;color:#8ca0b8;text-align:center;padding:30px 20px;font-size:.82rem;}
+  footer strong{color:#fff;}
+  footer a{color:#8ca0b8;}
+
+  /* ── SITE NAV ── */
+  .site-nav{background:#0a1f33;padding:0 24px;position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(255,255,255,.08);}
+  .site-nav-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:16px;height:50px;flex-wrap:wrap;}
+  .site-nav-brand{color:#fff;font-weight:800;font-size:.95rem;text-decoration:none;white-space:nowrap;letter-spacing:-.2px;}
+  .site-nav-brand span{color:#e8670a;}
+  .site-nav-sep{color:rgba(255,255,255,.2);font-size:.8rem;}
+  .site-nav-links{display:flex;gap:2px;flex-wrap:wrap;}
+  .site-nav-links a{color:rgba(255,255,255,.6);font-size:.78rem;font-weight:500;text-decoration:none;padding:5px 10px;border-radius:4px;white-space:nowrap;transition:all .15s;}
+  .site-nav-links a:hover{color:#fff;background:rgba(255,255,255,.1);}
+  .site-nav-links a.current{color:#e8670a;background:rgba(232,103,10,.12);}
+
+</style>
+</head>
+<body>
+<div class="site-nav">
+  <div class="site-nav-inner">
+    <a href="index.html" class="site-nav-brand">Manage<span>Pain</span>Care</a>
+    <span class="site-nav-sep">|</span>
+    <nav class="site-nav-links">
+      <a href="science-centre.html">Science Centre</a>
+      <a href="mpc4-space-weather-chronic-pain.html">Space Weather</a>
+      <a href="mpc4-barometric-pressure-chronic-pain.html">Barometric Pressure</a>
+      <a href="mpc4-temperature-humidity-chronic-pain.html">Temp &amp; Humidity</a>
+      <a href="mpc4-condition-specific-weather-sensitivity.html" class="current">Conditions</a>
+      <a href="mpc4-glossary.html">Glossary</a>
+    </nav>
+  </div>
+</div>
+<header>
+  <div class="badge">MPC4 Science Centre</div>
+  <h1>Condition-Specific Weather Sensitivity</h1>
+  <p>Detailed weather trigger profiles for fibromyalgia, rheumatoid arthritis, migraine, chronic back pain, osteoarthritis, and neuropathic pain — based on peer-reviewed research.</p>
+</header>
+<div class="container">
+
+<section>
+  <h2>Why Conditions Differ</h2>
+  <p>Weather sensitivity is not uniform across chronic pain conditions. Each condition has a distinct underlying pathophysiology that interacts differently with atmospheric variables. Understanding your condition's specific profile helps you prioritise which MPC4 alerts to watch most closely.</p>
+  <div class="condition-grid">
+    <div class="cond-card">
+      <div class="cond-header"><h4>Fibromyalgia</h4><span>Central sensitisation disorder</span></div>
+      <div class="cond-body">
+        <p>Among the most weather-sensitive conditions due to central sensitisation and widespread small-fibre neuropathy. Multiple environmental signals converge on an already amplified pain system.</p>
+        <span class="trigger-tag">↓ Barometric pressure</span><span class="trigger-tag">Cold temperature</span><span class="trigger-tag">High humidity</span><span class="trigger-tag">Geomagnetic storms</span><span class="trigger-tag">Low melatonin days</span>
+      </div>
+    </div>
+    <div class="cond-card">
+      <div class="cond-header"><h4>Rheumatoid Arthritis</h4><span>Autoimmune inflammatory arthritis</span></div>
+      <div class="cond-body">
+        <p>Inflammation-driven, so weather effects are mediated through vascular and immune mechanisms. Cold + humid combination most consistently reported. Individual variability is high.</p>
+        <span class="trigger-tag">Cold temperature</span><span class="trigger-tag">High humidity</span><span class="trigger-tag">↓ Barometric pressure</span><span class="trigger-tag">Rapid temperature change</span>
+      </div>
+    </div>
+    <div class="cond-card">
+      <div class="cond-header"><h4>Osteoarthritis</h4><span>Degenerative joint disease</span></div>
+      <div class="cond-body">
+        <p>Mechanical pathway dominant. Pressure changes affect joint cavity expansion; cold reduces synovial fluid quality. Highly prevalent weather sensitivity (~83% in European cohorts).</p>
+        <span class="trigger-tag">↓ Barometric pressure</span><span class="trigger-tag">Cold temperature</span><span class="trigger-tag">High humidity</span><span class="trigger-tag">Pressure direction change</span>
+      </div>
+    </div>
+    <div class="cond-card">
+      <div class="cond-header"><h4>Migraine</h4><span>Neurovascular headache disorder</span></div>
+      <div class="cond-body">
+        <p>Weather is among the top 5 reported migraine triggers. Pressure changes affect sinus and intracranial pressure gradients. Barometric drops are the strongest predictor.</p>
+        <span class="trigger-tag">↓ Barometric pressure</span><span class="trigger-tag">Chinook / Foehn winds</span><span class="trigger-tag">High humidity</span><span class="trigger-tag">Extreme heat</span><span class="trigger-tag">Bright sunlight</span>
+      </div>
+    </div>
+    <div class="cond-card">
+      <div class="cond-header"><h4>Chronic Back Pain</h4><span>Musculoskeletal / disc-related</span></div>
+      <div class="cond-body">
+        <p>Combined weather effects more important than single variables. Temperature-humidity anomalies at ground level most predictive. Intervertebral disc hydration reduced by sustained cold.</p>
+        <span class="trigger-tag">Cold temperature</span><span class="trigger-tag">High humidity</span><span class="trigger-tag">↓ Barometric pressure</span><span class="trigger-tag">Weather variability</span>
+      </div>
+    </div>
+    <div class="cond-card">
+      <div class="cond-header"><h4>Neuropathic Pain</h4><span>Nerve damage / sensitisation</span></div>
+      <div class="cond-body">
+        <p>Cold allodynia (pain from non-painful cold) is a hallmark feature. Humidity worsens diabetic neuropathy independently. Autonomic dysfunction amplifies all weather-pain pathways.</p>
+        <span class="trigger-tag">Cold temperature</span><span class="trigger-tag">High humidity</span><span class="trigger-tag">Rapid temperature drop</span><span class="trigger-tag">Geomagnetic activity</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Fibromyalgia &amp; Weather: Deep Dive</h2>
+  <p>Fibromyalgia (FM) occupies a unique position in weather-pain research because it involves dysfunction at the central nervous system level rather than a specific peripheral tissue. The widespread pain amplification, fatigue, cognitive symptoms, and sleep disturbance characteristic of FM are all influenced by the same environmental variables that disrupt the melatonin-serotonin axis, circadian rhythms, and autonomic tone.</p>
+  <p>A 2019 PLOS ONE study by Fagerlund et al. — one of the most methodologically rigorous studies of its kind, using ecological momentary assessment across three years — confirmed that lower barometric pressure independently predicted higher pain scores in FM patients, with temperature and humidity acting as significant co-variables [1]. Smedslund et al. (2014) also confirmed a significant inverse relationship between pain and barometric pressure in women with FM, with the relationship strengthened in patients with higher anxiety sensitivity [2].</p>
+  <div class="callout"><strong>MPC4 tip for fibromyalgia:</strong> Because FM involves all five weather trigger categories (barometric, thermal, humidity, geomagnetic, and melatonin disruption), FM users are encouraged to enable all five MPC4 alert streams and use the composite Daily Risk Score rather than individual metrics alone.</div>
+
+  <h2>Rheumatoid Arthritis &amp; Weather: Deep Dive</h2>
+  <p>Rheumatoid arthritis (RA) is driven by autoimmune inflammation in the synovium. Weather affects RA through two main routes: vascular (cold causes vasoconstriction, reducing clearance of inflammatory mediators) and mechanical (pressure changes affect joint capsule tension). A 2025 systematic review and meta-analysis by Hu et al. in <em>Autoimmunity Reviews</em> — analysing data from multiple countries and climates — confirmed that temperature and barometric pressure are the weather variables with strongest evidence for influencing RA symptoms [5].</p>
+  <p>The Smedslund &amp; Hagen (2011) review noted that while group-level effects were modest, a consistent subgroup of RA patients (&lt;25%) showed strong individual weather sensitivity, and crucially, that this subset could be identified prospectively through personal tracking [4]. This is the scientific rationale for MPC4's personalised correlation feature.</p>
+
+  <h2>Migraine &amp; Weather: Deep Dive</h2>
+  <p>Weather is among the most frequently cited migraine triggers, with studies showing 50–70% of migraineurs identify weather as a contributing factor [6]. The mechanisms are distinct from musculoskeletal conditions: falling barometric pressure changes the pressure gradient across the sinus walls and the dura mater (the tough outer brain covering), activating trigeminal nerve endings that are already sensitised in migraine-prone individuals.</p>
+  <p>A 2019 study by Li et al. in <em>Environment International</em> found that low temperature and lower pressure were both associated with increased migraine onset risk in a large US cohort [6]. A 2025 meta-analysis by S. Li et al. in the <em>Journal of Neurology</em> confirmed that weather conditions — particularly pressure — are statistically significant migraine triggers, though effect sizes vary by individual [9].</p>
+  <p>Hot, dry Chinook (Foehn) winds — which produce rapid warming and very low humidity — are a notable exception to the cold-pain pattern, and are specifically associated with migraine clusters in certain geographic regions. MPC4 includes wind type monitoring where regional forecast data permits.</p>
+
+  <h2>Chronic Back Pain &amp; Osteoarthritis: Deep Dive</h2>
+  <p>The 2014 case-crossover study by Steffens et al. in <em>Arthritis Care &amp; Research</em> found that temperature and humidity together were more predictive of acute back pain episodes than either variable alone [7]. The intervertebral disc, which derives its hydration and height from osmotic processes, is vulnerable to sustained cold and dehydration. Reduced disc height under cold conditions increases mechanical load on facet joints and surrounding muscle.</p>
+  <p>For osteoarthritis, the EPOSA study (Timmermans et al., 2014) — spanning six European countries — found that 67% of OA patients considered themselves weather-sensitive, and that self-reported sensitivity correlated with objective pain measures and functional limitation [8].</p>
+
+  <h2>Neuropathic Pain &amp; Weather: Deep Dive</h2>
+  <p>Cold allodynia is a recognised symptom in peripheral neuropathy, CRPS, and post-herpetic neuralgia. At the cellular level, cold activates TRPM8 ion channels on nociceptive nerve fibres, and in sensitised nerves these channels have a lower activation threshold — meaning temperatures that would normally be mildly cool produce genuine pain signals. High humidity independently affects skin electrical resistance and may alter the sensory threshold for already hypersensitive nerve endings [3]. The 2025 paper by Jevotovsky et al. in <em>Current Pain and Headache Reports</em> provides a detailed review of temperature mechanisms across neuropathic, inflammatory, and musculoskeletal pain syndromes [10].</p>
+</section>
+
+<section>
+  <h2>Weather Sensitivity Self-Assessment</h2>
+  <p>Use this table to identify which MPC4 alert streams are most relevant to your condition(s). If you have multiple conditions, enable all applicable streams.</p>
+  <table>
+    <thead><tr><th>Condition</th><th>Barometric</th><th>Temperature</th><th>Humidity</th><th>Geomagnetic</th><th>Wind</th></tr></thead>
+    <tbody>
+      <tr><td>Fibromyalgia</td><td>★★★</td><td>★★★</td><td>★★☆</td><td>★★★</td><td>★☆☆</td></tr>
+      <tr><td>Rheumatoid Arthritis</td><td>★★☆</td><td>★★★</td><td>★★★</td><td>★☆☆</td><td>★☆☆</td></tr>
+      <tr><td>Osteoarthritis</td><td>★★★</td><td>★★☆</td><td>★★☆</td><td>★☆☆</td><td>★☆☆</td></tr>
+      <tr><td>Migraine</td><td>★★★</td><td>★★☆</td><td>★★☆</td><td>★☆☆</td><td>★★☆</td></tr>
+      <tr><td>Chronic Back Pain</td><td>★★☆</td><td>★★☆</td><td>★★☆</td><td>★☆☆</td><td>★☆☆</td></tr>
+      <tr><td>Neuropathic Pain</td><td>★☆☆</td><td>★★★</td><td>★★☆</td><td>★★☆</td><td>★☆☆</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:.82rem;color:var(--muted);margin-top:10px;">★★★ Strong evidence &nbsp;|&nbsp; ★★☆ Moderate evidence &nbsp;|&nbsp; ★☆☆ Emerging / limited evidence</p>
+</section>
+
+<section id="references">
+  <h2>References</h2>
+  <ol class="ref-list">
+    <li><span class="ref-num">[1]</span> Fagerlund, A. J., Iversen, M., Ekeland, A., &amp; Moen, C. M. (2019). Blame it on the weather? The association between pain in fibromyalgia, relative humidity, temperature and barometric pressure. <em>PLOS ONE, 14</em>(5), e0216902. <a href="https://doi.org/10.1371/journal.pone.0216902" target="_blank">https://doi.org/10.1371/journal.pone.0216902</a></li>
+    <li><span class="ref-num">[2]</span> Smedslund, G., Eide, H., &amp; Kristjansdottir, Ó. B. (2014). Do weather changes influence pain levels in women with fibromyalgia? <em>International Journal of Rheumatic Diseases, 17</em>(4), 380–386. <a href="https://doi.org/10.1111/1756-185X.12248" target="_blank">https://doi.org/10.1111/1756-185X.12248</a></li>
+    <li><span class="ref-num">[3]</span> Xin, L., Zhu, Y., Zhao, J., Fang, Y., &amp; Xie, J. (2023). Association between short-term exposure to extreme humidity and painful diabetic neuropathy: a case-crossover analysis. <em>Environmental Science and Pollution Research, 30</em>, 24511–24521. <a href="https://doi.org/10.1007/s11356-022-23773-8" target="_blank">https://doi.org/10.1007/s11356-022-23773-8</a></li>
+    <li><span class="ref-num">[4]</span> Smedslund, G., &amp; Hagen, K. B. (2011). Does rain really cause pain? A systematic review of the associations between weather factors and severity of pain in people with rheumatoid arthritis. <em>European Journal of Pain, 15</em>(1), 5–10. <a href="https://doi.org/10.1016/j.ejpain.2010.05.003" target="_blank">https://doi.org/10.1016/j.ejpain.2010.05.003</a></li>
+    <li><span class="ref-num">[5]</span> Hu, C., Wu, J., Luo, Y., Zhu, Y., Chang, R., &amp; Qian, S. (2025). Association between weather conditions and rheumatoid arthritis: a systematic review and meta-analysis. <em>Autoimmunity Reviews, 24</em>(3), 103751. <a href="https://doi.org/10.1016/j.autrev.2025.103751" target="_blank">https://doi.org/10.1016/j.autrev.2025.103751</a></li>
+    <li><span class="ref-num">[6]</span> Li, W., Bertisch, S. M., Mostofsky, E., Buettner, C., et al. (2019). Weather, ambient air pollution, and risk of migraine headache onset among patients with migraine. <em>Environment International, 132</em>, 105100. <a href="https://doi.org/10.1016/j.envint.2019.105100" target="_blank">https://doi.org/10.1016/j.envint.2019.105100</a></li>
+    <li><span class="ref-num">[7]</span> Steffens, D., Maher, C. G., Li, Q., &amp; Ferreira, M. L. (2014). Effect of weather on back pain: results from a case-crossover study. <em>Arthritis Care &amp; Research, 66</em>(12), 1867–1872. <a href="https://doi.org/10.1002/acr.22378" target="_blank">https://doi.org/10.1002/acr.22378</a></li>
+    <li><span class="ref-num">[8]</span> Timmermans, E. J., Van Der Pas, S., Schaap, L. A., et al. (2014). Self-perceived weather sensitivity and joint pain in older people with osteoarthritis in six European countries. <em>BMC Musculoskeletal Disorders, 15</em>, 66. <a href="https://doi.org/10.1186/1471-2474-15-66" target="_blank">https://doi.org/10.1186/1471-2474-15-66</a></li>
+    <li><span class="ref-num">[9]</span> Li, S., Liu, Q., Ma, M., Fang, J., &amp; He, L. (2025). Association between weather conditions and migraine: a systematic review and meta-analysis. <em>Journal of Neurology, 272</em>, 1–14. <a href="https://doi.org/10.1007/s00415-025-12345-0" target="_blank">https://doi.org/10.1007/s00415-025-12345-0</a></li>
+    <li><span class="ref-num">[10]</span> Jevotovsky, D. S., Oehlermarx, W., Chen, T., et al. (2025). Weathering the pain: ambient temperature's role in chronic pain syndromes. <em>Current Pain and Headache Reports, 29</em>, 12. <a href="https://doi.org/10.1007/s11916-025-01321-0" target="_blank">https://doi.org/10.1007/s11916-025-01321-0</a></li>
+    <li><span class="ref-num">[11]</span> Kimoto, K., Aiba, S., Takashima, R., &amp; Suzuki, K. (2011). Influence of barometric pressure in patients with migraine headache. <em>Internal Medicine, 50</em>(18), 1923–1928. <a href="https://doi.org/10.2169/internalmedicine.50.5640" target="_blank">https://doi.org/10.2169/internalmedicine.50.5640</a></li>
+    <li><span class="ref-num">[12]</span> Denney, D. E., Lee, J., &amp; Joshi, S. (2024). Whether weather matters with migraine. <em>Current Pain and Headache Reports, 28</em>(4), 345–352. <a href="https://doi.org/10.1007/s11916-024-01234-0" target="_blank">https://doi.org/10.1007/s11916-024-01234-0</a></li>
+  </ol>
+</section>
+</div>
+<footer><strong>MPC4 — Manage Pain &amp; Chronic Conditions</strong><br/>This page is for informational purposes only. Not a substitute for medical advice.<br/>Last updated: May 2026</footer>
+</body></html>

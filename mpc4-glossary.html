@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Glossary of Terms | MPC4</title>
+<style>
+  :root{--primary:#1a4f7a;--accent:#e8670a;--bg:#f5f8fc;--card:#ffffff;--text:#222831;--muted:#5a6473;--border:#d0dae6;--warn:#fff4e0;--warn-b:#e8670a;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;}
+  header{background:linear-gradient(135deg,var(--primary) 0%,#0d2f4d 100%);color:#fff;padding:60px 24px 48px;text-align:center;}
+  header .badge{display:inline-block;background:var(--accent);color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:16px;}
+  header h1{font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;margin-bottom:12px;}
+  header p{font-size:1.05rem;opacity:.85;max-width:640px;margin:0 auto;}
+  .container{max-width:900px;margin:0 auto;padding:0 20px;}
+  .search-bar{display:flex;gap:10px;margin:32px 0 16px;flex-wrap:wrap;}
+  .search-bar input{flex:1;min-width:200px;padding:10px 16px;border:1px solid var(--border);border-radius:8px;font-size:.95rem;outline:none;}
+  .search-bar input:focus{border-color:var(--accent);}
+  .filter-btns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;}
+  .filter-btn{padding:6px 16px;border:1px solid var(--border);border-radius:20px;background:var(--card);font-size:.82rem;cursor:pointer;transition:all .2s;}
+  .filter-btn:hover,.filter-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .glossary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;}
+  .term-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+  .term-card .term{font-size:1rem;font-weight:700;color:var(--primary);margin-bottom:4px;}
+  .term-card .category{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-bottom:10px;}
+  .term-card .definition{font-size:.88rem;color:var(--muted);line-height:1.6;}
+  .term-card .also{font-size:.8rem;color:var(--accent);margin-top:8px;}
+  .alpha-nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:28px;}
+  .alpha-nav a{display:inline-block;width:32px;height:32px;line-height:32px;text-align:center;border-radius:6px;background:var(--card);border:1px solid var(--border);font-weight:700;font-size:.85rem;color:var(--primary);}
+  .alpha-nav a:hover{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .alpha-section{margin-top:36px;}
+  .alpha-section h3{font-size:1.6rem;font-weight:800;color:var(--accent);margin-bottom:18px;padding-bottom:8px;border-bottom:2px solid var(--border);}
+  footer{background:#0d2f4d;color:#8ca0b8;text-align:center;padding:30px 20px;font-size:.82rem;}
+  footer strong{color:#fff;}
+
+  /* ── SITE NAV ── */
+  .site-nav{background:#0a1f33;padding:0 24px;position:sticky;top:0;z-index:200;border-bottom:1px solid rgba(255,255,255,.08);}
+  .site-nav-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:16px;height:50px;flex-wrap:wrap;}
+  .site-nav-brand{color:#fff;font-weight:800;font-size:.95rem;text-decoration:none;white-space:nowrap;letter-spacing:-.2px;}
+  .site-nav-brand span{color:#e8670a;}
+  .site-nav-sep{color:rgba(255,255,255,.2);font-size:.8rem;}
+  .site-nav-links{display:flex;gap:2px;flex-wrap:wrap;}
+  .site-nav-links a{color:rgba(255,255,255,.6);font-size:.78rem;font-weight:500;text-decoration:none;padding:5px 10px;border-radius:4px;white-space:nowrap;transition:all .15s;}
+  .site-nav-links a:hover{color:#fff;background:rgba(255,255,255,.1);}
+  .site-nav-links a.current{color:#e8670a;background:rgba(232,103,10,.12);}
+
+</style>
+</head>
+<body>
+<div class="site-nav">
+  <div class="site-nav-inner">
+    <a href="index.html" class="site-nav-brand">Manage<span>Pain</span>Care</a>
+    <span class="site-nav-sep">|</span>
+    <nav class="site-nav-links">
+      <a href="science-centre.html">Science Centre</a>
+      <a href="mpc4-space-weather-chronic-pain.html">Space Weather</a>
+      <a href="mpc4-barometric-pressure-chronic-pain.html">Barometric Pressure</a>
+      <a href="mpc4-temperature-humidity-chronic-pain.html">Temp &amp; Humidity</a>
+      <a href="mpc4-condition-specific-weather-sensitivity.html">Conditions</a>
+      <a href="mpc4-glossary.html" class="current">Glossary</a>
+    </nav>
+  </div>
+</div>
+<header>
+  <div class="badge">MPC4 Science Centre</div>
+  <h1>Glossary of Terms</h1>
+  <p>Plain-language definitions for every scientific and technical term used across the MPC4 Science Centre.</p>
+</header>
+<div class="container" style="padding-top:40px;padding-bottom:60px;">
+
+<div class="search-bar">
+  <input type="text" id="glossSearch" placeholder="Search terms, e.g. 'Kp index' or 'fibromyalgia'..." oninput="filterGloss()" />
+</div>
+<div class="filter-btns">
+  <button class="filter-btn active" onclick="filterCat('all',this)">All</button>
+  <button class="filter-btn" onclick="filterCat('space',this)">Space Weather</button>
+  <button class="filter-btn" onclick="filterCat('weather',this)">Conventional Weather</button>
+  <button class="filter-btn" onclick="filterCat('biology',this)">Biology &amp; Physiology</button>
+  <button class="filter-btn" onclick="filterCat('condition',this)">Pain Conditions</button>
+  <button class="filter-btn" onclick="filterCat('mpc4',this)">MPC4 App Terms</button>
+</div>
+
+<div class="glossary-grid" id="glossGrid">
+
+  <!-- SPACE WEATHER -->
+  <div class="term-card" data-cat="space" data-term="kp index">
+    <div class="term">Kp Index</div><div class="category">Space Weather</div>
+    <div class="definition">The planetary K-index — a global measure of geomagnetic disturbance on a scale of 0 (very quiet) to 9 (extreme storm). Updated every 3 hours by NOAA. Values of 5+ indicate a geomagnetic storm. The primary metric used by MPC4's space weather alert system.</div>
+  </div>
+
+  <div class="term-card" data-cat="space" data-term="geomagnetic storm">
+    <div class="term">Geomagnetic Storm</div><div class="category">Space Weather</div>
+    <div class="definition">A temporary disturbance in Earth's magnetosphere caused by solar wind activity, particularly from coronal mass ejections (CMEs). Classified G1 (minor, Kp=5) through G5 (extreme, Kp=9). Associated with disruption of melatonin production, autonomic nervous system function, and inflammatory pathways.</div>
+  </div>
+
+  <div class="term-card" data-cat="space" data-term="coronal mass ejection cme">
+    <div class="term">Coronal Mass Ejection (CME)</div><div class="category">Space Weather</div>
+    <div class="definition">A large expulsion of plasma and magnetic field from the Sun's corona. When Earth-directed, a CME typically arrives in 1–4 days and can trigger a geomagnetic storm. The primary cause of elevated Kp index readings.</div>
+  </div>
+
+  <div class="term-card" data-cat="space" data-term="solar flare">
+    <div class="term">Solar Flare</div><div class="category">Space Weather</div>
+    <div class="definition">An intense burst of electromagnetic radiation from the Sun, classified by X-ray intensity: A, B, C, M, or X (most powerful). X-class flares cause near-immediate HF radio blackouts. MPC4 monitors flare probability as a secondary component of the space weather risk score.</div>
+  </div>
+
+  <div class="term-card" data-cat="space" data-term="solar wind">
+    <div class="term">Solar Wind</div><div class="category">Space Weather</div>
+    <div class="definition">A continuous stream of charged particles (mostly protons and electrons) flowing outward from the Sun at 300–800 km/s. High-speed solar wind streams compress Earth's magnetosphere and precede geomagnetic storm onset, typically by 24–48 hours. MPC4 monitors solar wind speed as an early-warning indicator.</div>
+  </div>
+
+  <div class="term-card" data-cat="space" data-term="solar energetic particles sep proton flux">
+    <div class="term">Solar Energetic Particles (SEPs)</div><div class="category">Space Weather</div>
+    <div class="definition">High-energy protons and electrons accelerated by solar flares or CME shock waves. Elevated proton flux (proton events) has been linked to autonomic nervous system disruption and circadian rhythm interference. Measured in particle flux units (pfu) by NOAA's GOES satellites.</div>
+  </div>
+
+  <div class="term-card" data-cat="space" data-term="f10.7 solar flux index radio flux">
+    <div class="term">F10.7 Solar Flux Index</div><div class="category">Space Weather</div>
+    <div class="definition">A measure of solar radio emission at a 10.7 cm wavelength, used as a proxy for overall solar activity. Measured in solar flux units (sfu). Higher values indicate greater solar activity. Used in MPC4's weekly trend reports to contextualise short-term geomagnetic events.</div>
+  </div>
+
+  <div class="term-card" data-cat="space" data-term="cosmic rays galactic cosmic radiation gcr">
+    <div class="term">Cosmic Rays (GCR)</div><div class="category">Space Weather</div>
+    <div class="definition">High-energy particles originating outside our solar system. Their flux at Earth's surface increases during solar minima when the Sun's magnetic field provides less shielding. Proposed to influence biological systems through ionisation pathways, though evidence is still emerging.</div>
+  </div>
+
+  <div class="term-card" data-cat="space" data-term="ap index">
+    <div class="term">Ap Index</div><div class="category">Space Weather</div>
+    <div class="definition">The planetary A-index, a daily average measure of geomagnetic activity derived from Kp. Ranges from 0–400. Provides a 24-hour summary of geomagnetic conditions useful for correlating with daily symptom records. Referenced in several chronic pain and geomagnetic activity studies (Popovych et al., 2021).</div>
+  </div>
+
+  <!-- CONVENTIONAL WEATHER -->
+  <div class="term-card" data-cat="weather" data-term="barometric pressure atmospheric pressure hpa">
+    <div class="term">Barometric Pressure</div><div class="category">Conventional Weather</div>
+    <div class="definition">The weight of the atmosphere pressing down on Earth's surface, measured in hectopascals (hPa) or millibars (mb). Sea-level average is approximately 1013 hPa. Falling pressure signals approaching storms; rising pressure signals clearing skies. Pressure change rate (delta hPa/hr) is often more clinically relevant than absolute value for pain prediction.</div>
+  </div>
+
+  <div class="term-card" data-cat="weather" data-term="relative humidity rh">
+    <div class="term">Relative Humidity (RH)</div><div class="category">Conventional Weather</div>
+    <div class="definition">The amount of water vapour in the air as a percentage of the maximum possible at that temperature. Expressed as 0–100%. High humidity (&gt;70%) combined with cold temperature is the most consistently reported weather trigger for joint and musculoskeletal pain across multiple conditions.</div>
+  </div>
+
+  <div class="term-card" data-cat="weather" data-term="temperature celsius fahrenheit ambient">
+    <div class="term">Ambient Temperature</div><div class="category">Conventional Weather</div>
+    <div class="definition">The air temperature surrounding the body, distinct from body temperature. Measured in °C or °F. Cold temperatures below approximately 8–10°C (46–50°F) are most consistently associated with pain amplification in musculoskeletal and neuropathic conditions. MPC4 uses your local temperature from Open-Meteo.</div>
+  </div>
+
+  <div class="term-card" data-cat="weather" data-term="low pressure system cyclone storm front">
+    <div class="term">Low Pressure System</div><div class="category">Conventional Weather</div>
+    <div class="definition">A weather system where central atmospheric pressure is lower than surrounding areas, associated with cloudy, rainy, or stormy conditions. Low pressure systems produce the falling barometric pressure changes most associated with pain flares. They typically arrive 12–48 hours before the worst weather, giving MPC4 time to generate advance alerts.</div>
+  </div>
+
+  <div class="term-card" data-cat="weather" data-term="pressure gradient front cold front warm front">
+    <div class="term">Weather Front</div><div class="category">Conventional Weather</div>
+    <div class="definition">The boundary between two air masses of different temperature and humidity. Cold fronts (cold air advancing) produce rapid pressure falls and temperature drops — often the most painful weather transition for chronic pain patients. Warm fronts produce slower changes but prolonged overcast, humid conditions.</div>
+  </div>
+
+  <div class="term-card" data-cat="weather" data-term="chinook foehn wind">
+    <div class="term">Chinook / Foehn Wind</div><div class="category">Conventional Weather</div>
+    <div class="definition">Warm, dry downslope winds that produce rapid warming and very low humidity. Despite being warm, chinook winds are a recognised migraine trigger in affected regions (Rocky Mountain foothills, Alpine regions). MPC4 flags forecast chinook events in applicable geographic areas.</div>
+  </div>
+
+  <!-- BIOLOGY -->
+  <div class="term-card" data-cat="biology" data-term="melatonin pineal gland sleep">
+    <div class="term">Melatonin</div><div class="category">Biology &amp; Physiology</div>
+    <div class="definition">A hormone produced by the pineal gland that regulates the sleep-wake cycle and has direct analgesic (pain-reducing) properties. Geomagnetic disturbances suppress the enzyme activity needed to convert serotonin to melatonin. Low melatonin is associated with fibromyalgia, chronic back pain, and headaches. Key link between space weather and chronic pain.</div>
+  </div>
+
+  <div class="term-card" data-cat="biology" data-term="serotonin neurotransmitter">
+    <div class="term">Serotonin</div><div class="category">Biology &amp; Physiology</div>
+    <div class="definition">A neurotransmitter involved in mood regulation, pain modulation, and the precursor to melatonin. Low serotonin levels are characteristic of fibromyalgia. Geomagnetic disruption affects the serotonin-to-melatonin conversion pathway, explaining part of the weather-pain connection.</div>
+  </div>
+
+  <div class="term-card" data-cat="biology" data-term="central sensitisation pain amplification">
+    <div class="term">Central Sensitisation</div><div class="category">Biology &amp; Physiology</div>
+    <div class="definition">A state in which the central nervous system (brain and spinal cord) amplifies pain signals, lowering the threshold at which stimuli are perceived as painful. Common in fibromyalgia, CRPS, and chronic widespread pain. Patients with central sensitisation are disproportionately sensitive to weather changes because even small environmental stimuli exceed their reduced pain threshold.</div>
+  </div>
+
+  <div class="term-card" data-cat="biology" data-term="circadian rhythm biological clock">
+    <div class="term">Circadian Rhythm</div><div class="category">Biology &amp; Physiology</div>
+    <div class="definition">The approximately 24-hour biological cycle governing sleep, hormone secretion, immune function, and cell repair. Regulated by the suprachiasmatic nucleus (SCN) in the hypothalamus. Disrupted by geomagnetic activity and electric field changes. Disrupted circadian rhythms increase inflammatory cytokine production and pain sensitivity.</div>
+  </div>
+
+  <div class="term-card" data-cat="biology" data-term="autonomic nervous system ans heart rate variability hrv sympathetic parasympathetic">
+    <div class="term">Autonomic Nervous System (ANS)</div><div class="category">Biology &amp; Physiology</div>
+    <div class="definition">The division of the nervous system controlling involuntary functions including heart rate, blood pressure, digestion, and stress response. Comprises sympathetic (fight-or-flight) and parasympathetic (rest-and-digest) branches. Geomagnetic storms disrupt ANS balance, producing sympathetic dominance, reduced heart rate variability (HRV), and heightened pain sensitivity.</div>
+  </div>
+
+  <div class="term-card" data-cat="biology" data-term="inflammation cytokines inflammatory mediators tnf il-6">
+    <div class="term">Inflammation / Inflammatory Cytokines</div><div class="category">Biology &amp; Physiology</div>
+    <div class="definition">Inflammation is the body's immune response to injury or perceived threat. Cytokines (including TNF-α, IL-6, IL-1β) are signalling proteins that mediate and amplify inflammation. Both conventional weather changes (circadian disruption) and geomagnetic storms have been shown to elevate inflammatory cytokines, with a measurable 2–4 day lag in effect.</div>
+  </div>
+
+  <div class="term-card" data-cat="biology" data-term="nociceptor pain receptor nerve ending">
+    <div class="term">Nociceptor</div><div class="category">Biology &amp; Physiology</div>
+    <div class="definition">A specialised sensory nerve ending that detects potentially damaging stimuli (mechanical, thermal, chemical) and signals pain. In inflamed or sensitised tissue, nociceptors have a lower activation threshold and respond to barometric pressure changes, temperature shifts, and other physical stimuli that would be subthreshold in healthy tissue.</div>
+  </div>
+
+  <div class="term-card" data-cat="biology" data-term="synovial fluid joint cavity">
+    <div class="term">Synovial Fluid</div><div class="category">Biology &amp; Physiology</div>
+    <div class="definition">A viscous fluid that lubricates and nourishes joint cartilage within the joint capsule. Cold temperature reduces synovial fluid viscosity and volume, increasing friction and stiffness. Falling barometric pressure allows slight expansion of fluid and tissue within the joint capsule, stimulating nociceptors in sensitised joints.</div>
+  </div>
+
+  <div class="term-card" data-cat="biology" data-term="trpm8 cold receptor ion channel">
+    <div class="term">TRPM8 (Cold Receptor)</div><div class="category">Biology &amp; Physiology</div>
+    <div class="definition">A temperature-sensitive ion channel on sensory nerve fibres that activates in response to cooling (typically below ~26°C). In neuropathic conditions, TRPM8 channels have a higher baseline activation state and lower temperature threshold, contributing to cold allodynia — pain produced by temperatures that would not normally be painful.</div>
+  </div>
+
+  <div class="term-card" data-cat="biology" data-term="cold allodynia allodynia hyperalgesia">
+    <div class="term">Allodynia</div><div class="category">Biology &amp; Physiology</div>
+    <div class="definition">Pain produced by a stimulus that does not normally cause pain (e.g. light touch, mild cold). A hallmark of central sensitisation and neuropathic conditions. Cold allodynia — triggered by cool temperatures — is particularly relevant to weather sensitivity in neuropathic pain, fibromyalgia, and CRPS.</div>
+  </div>
+
+  <div class="term-card" data-cat="biology" data-term="heart rate variability hrv">
+    <div class="term">Heart Rate Variability (HRV)</div><div class="category">Biology &amp; Physiology</div>
+    <div class="definition">The variation in time between successive heartbeats, measured in milliseconds. High HRV reflects healthy autonomic nervous system flexibility (parasympathetic dominance); low HRV indicates stress or sympathetic dominance. Geomagnetic storms measurably reduce HRV in susceptible individuals, and low HRV correlates with increased pain sensitivity.</div>
+  </div>
+
+  <!-- PAIN CONDITIONS -->
+  <div class="term-card" data-cat="condition" data-term="fibromyalgia fibro widespread pain">
+    <div class="term">Fibromyalgia (FM)</div><div class="category">Pain Condition</div>
+    <div class="definition">A chronic condition characterised by widespread musculoskeletal pain, fatigue, sleep disturbance, and cognitive difficulties ("fibro fog"). Caused by central sensitisation rather than peripheral tissue damage. FM patients are among the most weather-sensitive of all chronic pain groups due to the amplified pain processing and disrupted neuroendocrine systems involved.</div>
+  </div>
+
+  <div class="term-card" data-cat="condition" data-term="rheumatoid arthritis ra autoimmune">
+    <div class="term">Rheumatoid Arthritis (RA)</div><div class="category">Pain Condition</div>
+    <div class="definition">An autoimmune disease in which the immune system attacks the synovial lining of joints, causing inflammation, pain, swelling, and eventual joint damage. Weather affects RA primarily through vascular (cold-induced vasoconstriction) and mechanical (pressure-related joint expansion) pathways. A consistent subset of RA patients (~25%) show clear individual weather sensitivity.</div>
+  </div>
+
+  <div class="term-card" data-cat="condition" data-term="osteoarthritis oa degenerative joint disease">
+    <div class="term">Osteoarthritis (OA)</div><div class="category">Pain Condition</div>
+    <div class="definition">The most common form of arthritis, involving progressive deterioration of joint cartilage and underlying bone. Weather sensitivity is highly prevalent (62–83% in studies). Falling barometric pressure and cold temperature are the most commonly reported triggers, acting through mechanical changes in joint cavity pressure and synovial fluid quality.</div>
+  </div>
+
+  <div class="term-card" data-cat="condition" data-term="migraine headache neurovascular">
+    <div class="term">Migraine</div><div class="category">Pain Condition</div>
+    <div class="definition">A complex neurological disorder characterised by recurrent, often severe headaches accompanied by nausea, light sensitivity, and aura in some patients. Affects ~14% of adults. Weather — particularly falling barometric pressure — is one of the most commonly reported triggers. The trigeminal nerve's sensitivity to pressure and vascular changes is the primary pathway.</div>
+  </div>
+
+  <div class="term-card" data-cat="condition" data-term="neuropathic pain nerve pain peripheral neuropathy">
+    <div class="term">Neuropathic Pain</div><div class="category">Pain Condition</div>
+    <div class="definition">Pain arising from damage or dysfunction of the nervous system rather than tissue injury. Includes diabetic peripheral neuropathy, post-herpetic neuralgia, CRPS, and trigeminal neuralgia. Cold allodynia and temperature-sensitivity are hallmark features. Humidity independently worsens diabetic neuropathy pain.</div>
+  </div>
+
+  <div class="term-card" data-cat="condition" data-term="complex regional pain syndrome crps rsd">
+    <div class="term">CRPS (Complex Regional Pain Syndrome)</div><div class="category">Pain Condition</div>
+    <div class="definition">A chronic pain condition typically affecting a limb after injury, characterised by severe pain disproportionate to the injury, skin colour/temperature changes, and autonomic dysfunction. Highly weather-sensitive due to both peripheral sensitisation and autonomic involvement. Cold and humidity are particularly potent triggers.</div>
+  </div>
+
+  <!-- MPC4 TERMS -->
+  <div class="term-card" data-cat="mpc4" data-term="daily risk score mpc4 composite score">
+    <div class="term">Daily Risk Score</div><div class="category">MPC4 App</div>
+    <div class="definition">MPC4's composite 0–10 pain risk rating, calculated from weighted inputs including current Kp index (45%), 72-hour forecast Kp (25%), solar wind speed (15%), proton flux (10%), and flare probability (5%). Displayed daily on the app dashboard. Green (0–3), Yellow (3–5), Orange (5–7), Red (7–10).</div>
+  </div>
+
+  <div class="term-card" data-cat="mpc4" data-term="thpi temperature humidity pain index">
+    <div class="term">Temperature-Humidity Pain Index (THPI)</div><div class="category">MPC4 App</div>
+    <div class="definition">MPC4's composite score combining ambient temperature, relative humidity, and rate of temperature change into a single metric. Provides a more clinically meaningful signal than temperature or humidity alone, reflecting the research showing their synergistic effect on pain. Displayed alongside the barometric and space weather scores.</div>
+  </div>
+
+  <div class="term-card" data-cat="mpc4" data-term="personal sensitivity profile correlation tracker">
+    <div class="term">Personal Sensitivity Profile</div><div class="category">MPC4 App</div>
+    <div class="definition">A user-specific model built from at least 4 weeks of pain journal entries cross-referenced with environmental data. Identifies which weather variables most strongly correlate with your pain, your personal threshold values, and your individual lag time (the delay between a weather event and your symptom response). Used to personalise alert thresholds.</div>
+  </div>
+
+  <div class="term-card" data-cat="mpc4" data-term="lag time lag effect delayed response">
+    <div class="term">Lag Time</div><div class="category">MPC4 App</div>
+    <div class="definition">The delay between an environmental trigger event (e.g. a geomagnetic storm or barometric pressure drop) and the peak of a pain flare response. Research shows inflammatory responses peak 2–4 days after geomagnetic events (Pahlen, 2018). Individual mechanical responses to pressure changes often peak 6–24 hours post-event. MPC4 uses lag-adjusted forecasting to generate ahead-of-time alerts.</div>
+  </div>
+
+  <div class="term-card" data-cat="mpc4" data-term="pain journal symptom log diary">
+    <div class="term">Pain Journal</div><div class="category">MPC4 App</div>
+    <div class="definition">MPC4's daily symptom logging tool where you record pain intensity (0–10), location, type, fatigue, sleep quality, and other factors. Data is stored locally and used to build your Personal Sensitivity Profile. Journal entries are never shared without explicit consent.</div>
+  </div>
+
+  <div class="term-card" data-cat="mpc4" data-term="45 day calendar forecast long range planning">
+    <div class="term">45-Day Outlook</div><div class="category">MPC4 App</div>
+    <div class="definition">A long-range calendar view in MPC4 using NOAA's 45-day space weather forecast combined with extended atmospheric forecasts. Designed to help users plan ahead for medical appointments, travel, physical activities, and social commitments — scheduling demanding tasks on forecast lower-risk days.</div>
+  </div>
+
+</div><!-- /glossary-grid -->
+</div><!-- /container -->
+
+<script>
+function filterGloss() {
+  const q = document.getElementById('glossSearch').value.toLowerCase();
+  document.querySelectorAll('.term-card').forEach(card => {
+    const text = card.dataset.term + ' ' + card.innerText.toLowerCase();
+    card.style.display = text.includes(q) ? '' : 'none';
+  });
+}
+function filterCat(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.term-card').forEach(card => {
+    card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+  });
+  document.getElementById('glossSearch').value = '';
+}
+</script>
+
+<footer><strong>MPC4 — Manage Pain &amp; Chronic Conditions</strong><br/>This page is for informational purposes only. Not a substitute for medical advice.<br/>Last updated: May 2026</footer>
+</body></html>
