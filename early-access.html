@@ -160,6 +160,7 @@
     letter-spacing: -0.2px;
     display: block; text-align: center;
     text-decoration: none;
+    font-family: inherit;
   }
   .btn-submit:hover {
     background: var(--primary-dark);
@@ -319,30 +320,50 @@
       <div class="card-title">Request Early Access</div>
       <div class="card-sub">Takes 60 seconds. We'll follow up personally within 48 hours.</div>
 
-      <div class="field">
-        <label>Your Name</label>
-        <input type="text" id="f-name" placeholder="First name is fine">
-      </div>
-      <div class="field">
-        <label>Email Address</label>
-        <input type="email" id="f-email" placeholder="where we'll send your access">
-      </div>
-      <div class="field">
-        <label>State</label>
-        <input type="text" id="f-state" placeholder="e.g. Kentucky">
-      </div>
-      <div class="field">
-        <label>What brings you here? <span style="font-weight:400;text-transform:none;">(optional)</span></label>
-        <textarea id="f-note" placeholder="Pharmacy refusal, forced taper, insurance denial, just tired of not being believed — whatever it is, we get it."></textarea>
-      </div>
+      <form id="early-access-form"
+            action="https://formspree.io/f/xykopnko"
+            method="POST">
 
-      <a id="submit-btn" class="btn-submit" href="#" onclick="sendRequest(event)">
-        Request Early Access &rarr;
-      </a>
-      <p class="fine-print">
-        No spam. No sales pitch. Just a real conversation.<br>
-        Questions? <a href="mailto:managedpaincare@gmail.com">managedpaincare@gmail.com</a>
-      </p>
+        <div class="field">
+          <label>Your Name</label>
+          <input type="text" name="name" id="f-name" placeholder="First name is fine" required>
+        </div>
+        <div class="field">
+          <label>Email Address</label>
+          <input type="email" name="email" id="f-email" placeholder="where we'll send your access" required>
+        </div>
+        <div class="field">
+          <label>State</label>
+          <input type="text" name="state" id="f-state" placeholder="e.g. Kentucky">
+        </div>
+        <div class="field">
+          <label>What brings you here? <span style="font-weight:400;text-transform:none;">(optional)</span></label>
+          <textarea name="situation" id="f-note" placeholder="Pharmacy refusal, forced taper, insurance denial, just tired of not being believed — whatever it is, we get it."></textarea>
+        </div>
+
+        <!-- hidden field so you know where the submission came from -->
+        <input type="hidden" name="_source" value="managedpaincare.com/early-access">
+        <!-- redirect to a thank-you message after submit -->
+        <input type="hidden" name="_next" value="https://managedpaincare.com/early-access.html?submitted=true">
+        <!-- custom subject line in the email you receive -->
+        <input type="hidden" name="_subject" value="Early Access Request - ManagePainCare">
+
+        <button type="submit" class="btn-submit">
+          Request Early Access &rarr;
+        </button>
+        <p class="fine-print">
+          No spam. No sales pitch. Just a real conversation.<br>
+          Questions? <a href="mailto:managedpaincare@gmail.com">managedpaincare@gmail.com</a>
+        </p>
+
+      </form>
+
+      <!-- Thank-you message shown after submission -->
+      <div id="thankyou-msg" style="display:none; text-align:center; padding: 20px 0;">
+        <div style="font-size:40px; margin-bottom:12px;">&#10003;</div>
+        <h3 style="color: var(--primary); margin-bottom:8px;">You're on the list.</h3>
+        <p style="color: var(--text-soft);">We'll be in touch within 48 hours — personally, not a robot.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -457,33 +478,15 @@
 
 
 <script>
-function sendRequest(e) {
-  e.preventDefault();
-  const name  = document.getElementById('f-name').value.trim();
-  const email = document.getElementById('f-email').value.trim();
-  const state = document.getElementById('f-state').value.trim();
-  const note  = document.getElementById('f-note').value.trim();
-
-  if (!name || !email) {
-    alert('Please enter your name and email so we can follow up with you.');
-    return;
-  }
-
-  const subject = encodeURIComponent('Early Access Request — ManagePainCare');
-  const body = encodeURIComponent(
-    'EARLY ACCESS REQUEST\n' +
-    '====================\n\n' +
-    'Name:   ' + name + '\n' +
-    'Email:  ' + email + '\n' +
-    'State:  ' + (state || 'not provided') + '\n\n' +
-    'Their situation:\n' +
-    (note || '(nothing provided)') + '\n\n' +
-    '----\n' +
-    'Sent from managedpaincare.com/early-access'
-  );
-
-  window.location.href =
-    'mailto:managedpaincare@gmail.com?subject=' + subject + '&body=' + body;
+// Show thank-you state if Formspree redirected back with ?submitted=true
+if (new URLSearchParams(window.location.search).get('submitted') === 'true') {
+  document.addEventListener('DOMContentLoaded', function () {
+    var form = document.getElementById('early-access-form');
+    var msg  = document.getElementById('thankyou-msg');
+    if (form) form.style.display = 'none';
+    if (msg)  msg.style.display  = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 }
 </script>
 
