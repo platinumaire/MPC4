@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Early Access — ManagePainCare</title>
+<meta name="description" content="Get early access to ManagePainCare — the first pain tracking app built by a chronic pain patient, for chronic pain patients.">
+<style>
+  :root {
+    --primary:        #2D6FA8;
+    --primary-dark:   #1A4F7A;
+    --primary-light:  #4D8EC4;
+    --primary-bg:     #EBF3FB;
+    --secondary:      #0891B2;
+    --pain-low:       #2ECC71;
+    --pain-med:       #F39C12;
+    --pain-high:      #E74C3C;
+    --bg:             #F5F7FF;
+    --surface:        #FFFFFF;
+    --surface-alt:    #EEF1FF;
+    --text:           #1C2B3A;
+    --text-soft:      #5C6A8E;
+    --outline:        #C5CAE9;
+    --success:        #27AE60;
+    --radius:         14px;
+    --radius-sm:      8px;
+    --shadow:         0 4px 24px rgba(45,111,168,0.10);
+    --shadow-lg:      0 8px 40px rgba(45,111,168,0.16);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ──────────────────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--outline);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 32px; height: 60px;
+  }
+  .nav-logo {
+    font-size: 18px; font-weight: 700; color: var(--primary);
+    text-decoration: none; letter-spacing: -0.3px;
+  }
+  .nav-logo span { color: var(--text-soft); font-weight: 400; }
+  .nav-back {
+    font-size: 13px; font-weight: 500; color: var(--text-soft);
+    text-decoration: none; padding: 6px 14px; border-radius: 20px;
+    transition: all 0.2s;
+  }
+  .nav-back:hover { background: var(--primary-bg); color: var(--primary); }
+
+  /* ── HERO ─────────────────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    background: linear-gradient(145deg, #1A4F7A 0%, #2D6FA8 55%, #0891B2 100%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 100px 24px 60px;
+    position: relative; overflow: hidden;
+    text-align: center;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 60% 40%, rgba(255,255,255,0.07) 0%, transparent 65%);
+  }
+  .hero-inner { position: relative; z-index: 1; max-width: 680px; }
+
+  .badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.28);
+    color: rgba(255,255,255,0.92);
+    font-size: 11px; font-weight: 700; letter-spacing: 2px;
+    padding: 6px 18px; border-radius: 20px;
+    margin-bottom: 28px; text-transform: uppercase;
+  }
+
+  .hero h1 {
+    font-size: clamp(36px, 5.5vw, 60px);
+    font-weight: 800; color: white;
+    line-height: 1.08; letter-spacing: -1.5px;
+    margin-bottom: 22px;
+  }
+  .hero h1 em { font-style: normal; color: #7DD3FC; }
+
+  .hero-sub {
+    font-size: 18px; color: rgba(255,255,255,0.82);
+    line-height: 1.65; margin-bottom: 48px;
+  }
+
+  /* ── CARD ─────────────────────────────────────────────────── */
+  .card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px 44px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.22);
+    max-width: 560px; width: 100%;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  .card-title {
+    font-size: 20px; font-weight: 700;
+    color: var(--text); margin-bottom: 6px;
+  }
+  .card-sub {
+    font-size: 14px; color: var(--text-soft);
+    margin-bottom: 28px; line-height: 1.5;
+  }
+
+  .field { margin-bottom: 16px; }
+  .field label {
+    display: block;
+    font-size: 12px; font-weight: 600;
+    color: var(--text-soft); letter-spacing: 0.5px;
+    margin-bottom: 6px; text-transform: uppercase;
+  }
+  .field input,
+  .field textarea,
+  .field select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid var(--outline);
+    border-radius: var(--radius-sm);
+    font-size: 15px; color: var(--text);
+    font-family: inherit;
+    background: var(--surface);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    resize: none;
+  }
+  .field input:focus,
+  .field textarea:focus,
+  .field select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(45,111,168,0.12);
+  }
+  .field textarea { min-height: 80px; }
+
+  .btn-submit {
+    width: 100%;
+    padding: 16px;
+    background: var(--primary);
+    color: white;
+    font-size: 16px; font-weight: 700;
+    border: none; border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+    letter-spacing: -0.2px;
+    display: block; text-align: center;
+    text-decoration: none;
+  }
+  .btn-submit:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(45,111,168,0.30);
+  }
+  .btn-submit:active { transform: translateY(0); }
+
+  .fine-print {
+    font-size: 12px; color: var(--text-soft);
+    text-align: center; margin-top: 14px;
+    line-height: 1.5;
+  }
+  .fine-print a { color: var(--primary); }
+
+  /* ── WHAT YOU GET ─────────────────────────────────────────── */
+  .section {
+    max-width: 900px; margin: 0 auto;
+    padding: 80px 24px;
+  }
+  .section-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 2.5px;
+    color: var(--primary); text-transform: uppercase; margin-bottom: 12px;
+  }
+  .section-title {
+    font-size: clamp(26px, 3.5vw, 40px); font-weight: 800;
+    letter-spacing: -0.5px; color: var(--text);
+    line-height: 1.15; margin-bottom: 14px;
+  }
+  .section-sub {
+    font-size: 16px; color: var(--text-soft);
+    line-height: 1.65; max-width: 560px; margin-bottom: 48px;
+  }
+
+  .perks-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+  }
+  .perk {
+    background: var(--surface);
+    border: 1.5px solid var(--outline);
+    border-radius: var(--radius);
+    padding: 24px;
+  }
+  .perk-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: var(--primary-bg);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; margin-bottom: 14px;
+  }
+  .perk h4 {
+    font-size: 14px; font-weight: 700;
+    color: var(--text); margin-bottom: 6px;
+  }
+  .perk p {
+    font-size: 13px; color: var(--text-soft); line-height: 1.55;
+  }
+
+  /* ── STORY ────────────────────────────────────────────────── */
+  .story-section {
+    background: var(--surface);
+    border-top: 1px solid var(--outline);
+    border-bottom: 1px solid var(--outline);
+  }
+  .story-inner {
+    max-width: 720px; margin: 0 auto;
+    padding: 72px 24px;
+  }
+  .quote-mark {
+    font-size: 72px; line-height: 0.6;
+    color: var(--primary-light); opacity: 0.4;
+    font-family: Georgia, serif; margin-bottom: 16px;
+  }
+  .quote-text {
+    font-size: 20px; font-weight: 500;
+    color: var(--text); line-height: 1.6;
+    font-style: italic; margin-bottom: 28px;
+  }
+  .quote-text strong { font-style: normal; color: var(--primary); }
+
+  .story-body {
+    font-size: 15px; color: var(--text-soft);
+    line-height: 1.75;
+  }
+  .story-body p { margin-bottom: 14px; }
+  .story-body strong { color: var(--text); }
+
+  /* ── BOTTOM CTA ───────────────────────────────────────────── */
+  .bottom-cta {
+    background: linear-gradient(135deg, #1A4F7A 0%, #2D6FA8 100%);
+    padding: 80px 24px; text-align: center;
+  }
+  .bottom-cta h2 {
+    font-size: clamp(28px, 4vw, 44px); font-weight: 800;
+    color: white; letter-spacing: -0.5px;
+    line-height: 1.15; margin-bottom: 16px;
+  }
+  .bottom-cta p {
+    font-size: 17px; color: rgba(255,255,255,0.78);
+    margin-bottom: 36px; line-height: 1.6;
+    max-width: 500px; margin-left: auto; margin-right: auto;
+  }
+  .btn-white {
+    display: inline-block;
+    background: white; color: var(--primary);
+    font-size: 16px; font-weight: 700;
+    padding: 16px 40px; border-radius: 30px;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+    transition: all 0.2s;
+  }
+  .btn-white:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.24);
+  }
+
+  /* ── FOOTER ───────────────────────────────────────────────── */
+  footer {
+    background: var(--text);
+    padding: 28px 24px; text-align: center;
+  }
+  footer p {
+    font-size: 12px; color: rgba(255,255,255,0.38);
+    line-height: 1.6;
+  }
+  footer a { color: rgba(255,255,255,0.55); text-decoration: none; }
+  footer a:hover { color: white; }
+
+  @media (max-width: 600px) {
+    .card { padding: 28px 24px; }
+    nav { padding: 0 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ──────────────────────────────────────────────────────────────────── -->
+<nav>
+  <a class="nav-logo" href="/">ManagePainCare <span>by Platinumaire</span></a>
+  <a class="nav-back" href="/">&#8592; Back to site</a>
+</nav>
+
+
+<!-- ── HERO ─────────────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="badge">&#128274; Limited Early Access</div>
+    <h1>Be first.<br>Help build <em>something real.</em></h1>
+    <p class="hero-sub">
+      ManagePainCare is a pain tracking app built by a chronic pain patient who needed it
+      and couldn't find it. We're opening early access to a small group before our
+      Google Play launch in June 2026.
+    </p>
+
+    <!-- REQUEST CARD -->
+    <div class="card">
+      <div class="card-title">Request Early Access</div>
+      <div class="card-sub">Takes 60 seconds. We'll follow up personally within 48 hours.</div>
+
+      <div class="field">
+        <label>Your Name</label>
+        <input type="text" id="f-name" placeholder="First name is fine">
+      </div>
+      <div class="field">
+        <label>Email Address</label>
+        <input type="email" id="f-email" placeholder="where we'll send your access">
+      </div>
+      <div class="field">
+        <label>State</label>
+        <input type="text" id="f-state" placeholder="e.g. Kentucky">
+      </div>
+      <div class="field">
+        <label>What brings you here? <span style="font-weight:400;text-transform:none;">(optional)</span></label>
+        <textarea id="f-note" placeholder="Pharmacy refusal, forced taper, insurance denial, just tired of not being believed — whatever it is, we get it."></textarea>
+      </div>
+
+      <a id="submit-btn" class="btn-submit" href="#" onclick="sendRequest(event)">
+        Request Early Access &rarr;
+      </a>
+      <p class="fine-print">
+        No spam. No sales pitch. Just a real conversation.<br>
+        Questions? <a href="mailto:managedpaincare@gmail.com">managedpaincare@gmail.com</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── WHAT EARLY ACCESS MEANS ───────────────────────────────────────────────── -->
+<section style="background: var(--surface); border-bottom: 1px solid var(--outline);">
+  <div class="section">
+    <div class="section-label">What you get</div>
+    <h2 class="section-title">Early access isn't a waitlist.<br>It's a seat at the table.</h2>
+    <p class="section-sub">
+      You'll use the app before anyone else. Your feedback shapes what gets built next.
+      And you'll have direct access to the founder — not a support ticket queue.
+    </p>
+
+    <div class="perks-grid">
+      <div class="perk">
+        <div class="perk-icon">&#127381;</div>
+        <h4>First on Google Play</h4>
+        <p>You get access the day the beta opens — before the public launch and before the waitlist.</p>
+      </div>
+      <div class="perk">
+        <div class="perk-icon">&#128172;</div>
+        <h4>Direct Line to the Founder</h4>
+        <p>Real feedback goes to the person building it. If something doesn't work for you, it gets fixed.</p>
+      </div>
+      <div class="perk">
+        <div class="perk-icon">&#128203;</div>
+        <h4>Doctor-Ready Reports</h4>
+        <p>One-tap PDF exports of your pain patterns, medication history, and weather correlations. Built for appointments.</p>
+      </div>
+      <div class="perk">
+        <div class="perk-icon">&#128274;</div>
+        <h4>Free for Early Users</h4>
+        <p>Early access users keep core features free. You believed in this before the reviews. That means something.</p>
+      </div>
+      <div class="perk">
+        <div class="perk-icon">&#9729;</div>
+        <h4>Weather + Pain Correlation</h4>
+        <p>The app automatically captures barometric pressure, humidity, and air quality every time you log. No extra steps.</p>
+      </div>
+      <div class="perk">
+        <div class="perk-icon">&#128065;</div>
+        <h4>Your Data. Your Device.</h4>
+        <p>Everything stays on your phone. No cloud uploads, no data brokers, no ads. Your health history belongs to you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── STORY ─────────────────────────────────────────────────────────────────── -->
+<section class="story-section">
+  <div class="story-inner">
+    <div class="quote-mark">&#8220;</div>
+    <p class="quote-text">
+      I needed documentation for <strong>insurance denials, pharmacy refusals, and doctors
+      who didn't believe me.</strong> The tool didn't exist. So I built it.
+    </p>
+    <div class="story-body">
+      <p>
+        Eleven years of chronic pain. Eleven years of appointments where the 15 minutes ran out
+        before the full picture could be told. Eleven years of "have you tried ibuprofen?"
+      </p>
+      <p>
+        ManagePainCare exists because chronic pain patients are <strong>intelligent adults
+        who deserve data about their own bodies.</strong> Not a glorified reminder app.
+        Not a mood journal. A real tool — one that connects your pain to the weather,
+        your sleep, your medications, your life.
+      </p>
+      <p>
+        If you've filed a complaint, contacted a senator, submitted testimony,
+        or just sat in a parking lot after a pharmacy refusal trying to figure out what to do next —
+        <strong>this is for you.</strong>
+      </p>
+      <p style="margin-bottom:0;">
+        &mdash; John Martin, Founder &amp; Chronic Pain Patient<br>
+        <span style="color: var(--primary); font-weight: 600;">Platinumaire LLC</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── BOTTOM CTA ─────────────────────────────────────────────────────────────── -->
+<section class="bottom-cta">
+  <h2>Your pain has patterns.<br>Let's find them.</h2>
+  <p>
+    Early access opens June 2026 on Google Play.
+    A small group gets in first. Be one of them.
+  </p>
+  <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;" class="btn-white">
+    Request Early Access &uarr;
+  </a>
+</section>
+
+
+<!-- ── FOOTER ─────────────────────────────────────────────────────────────────── -->
+<footer>
+  <p>
+    &copy; 2026 Platinumaire LLC &nbsp;&middot;&nbsp;
+    <a href="/">ManagePainCare</a> &nbsp;&middot;&nbsp;
+    <a href="mailto:managedpaincare@gmail.com">managedpaincare@gmail.com</a> &nbsp;&middot;&nbsp;
+    <a href="/privacy">Privacy Policy</a> &nbsp;&middot;&nbsp;
+    <a href="/terms">Terms of Service</a>
+  </p>
+  <p style="margin-top:6px;">
+    ManagePainCare is not a medical device and does not provide medical advice.
+    Always consult your healthcare provider before making changes to your treatment.
+  </p>
+</footer>
+
+
+<script>
+function sendRequest(e) {
+  e.preventDefault();
+  const name  = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const state = document.getElementById('f-state').value.trim();
+  const note  = document.getElementById('f-note').value.trim();
+
+  if (!name || !email) {
+    alert('Please enter your name and email so we can follow up with you.');
+    return;
+  }
+
+  const subject = encodeURIComponent('Early Access Request — ManagePainCare');
+  const body = encodeURIComponent(
+    'EARLY ACCESS REQUEST\n' +
+    '====================\n\n' +
+    'Name:   ' + name + '\n' +
+    'Email:  ' + email + '\n' +
+    'State:  ' + (state || 'not provided') + '\n\n' +
+    'Their situation:\n' +
+    (note || '(nothing provided)') + '\n\n' +
+    '----\n' +
+    'Sent from managedpaincare.com/early-access'
+  );
+
+  window.location.href =
+    'mailto:managedpaincare@gmail.com?subject=' + subject + '&body=' + body;
+}
+</script>
+
+</body>
+</html>
